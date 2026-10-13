@@ -1,0 +1,43 @@
+# Huizhou Policy & Public Attention Lab — 全局配置
+# 所有可调参数集中在此，避免散落在代码中。
+
+# 语义匹配模型（sentence-transformers），首次运行会在本地缓存下载
+model:
+  name: "paraphrase-multilingual-MiniLM-L12-v2"
+  device: "cpu"                 # "cpu" | "cuda"
+  batch_size: 32
+
+# 语义匹配阈值与检索规模
+matching:
+  similarity_threshold: 0.55   # 低于此阈值的边不进入语义网络
+  top_k: 5                     # 每个热点最多保留的政策段落数
+  min_threshold: 0.0            # 阈值灵敏度扫描下限
+
+# 时间分析
+temporal:
+  window_days: 7               # 滑动平均窗口（天）
+  burst_z_threshold: 2.0       # z-score 爆发检测阈值
+
+# 热点平台（各平台热度指标口径不同，禁止跨平台直接求和）
+platforms:
+  - "微博"
+  - "抖音"
+  - "小红书"
+  - "百度"
+
+# 可复现性
+seed: 42
+
+# 聚类
+clustering:
+  n_clusters: 8
+  max_iter: 300
+
+# 路径（相对于项目根目录）
+paths:
+  raw: "data/raw"
+  processed: "data/processed"
+  samples: "data/samples"
+  reports: "reports"
+  figures: "reports/figures"
+  config: "configs/config.yaml"

@@ -1,0 +1,25 @@
+snapshot_id,platform,captured_at,title,rank,raw_heat,url
+snap_001,微博,2026-10-01 09:00:00,深惠城际建设加速 惠州融入轨道上的大湾区,3,2850000,https://example.com/weibo/1
+snap_002,微博,2026-10-01 09:00:00,国庆假期惠州西湖游客爆满,7,1920000,https://example.com/weibo/2
+snap_003,抖音,2026-10-01 12:00:00,惠州海鲜市场开渔第一网,1,8600000,https://example.com/douyin/1
+snap_004,抖音,2026-10-01 12:00:00,打工人在惠州的一天vlog,5,3100000,https://example.com/douyin/2
+snap_005,小红书,2026-10-02 10:00:00,惠州双月湾赶海攻略 亲子游,2,450000,https://example.com/xhs/1
+snap_006,微博,2026-10-02 09:00:00,惠州电子信息产业招聘火爆 月薪过万,4,2400000,https://example.com/weibo/3
+snap_007,微博,2026-10-03 09:00:00,惠州新建三甲医院封顶 基层医疗再升级,6,1750000,https://example.com/weibo/4
+snap_008,抖音,2026-10-03 12:00:00,惠州房价又降了？中介说...,2,7200000,https://example.com/douyin/3
+snap_009,百度,2026-10-03 15:00:00,惠州十五五规划全文,1,980000,https://example.com/baidu/1
+snap_010,微博,2026-10-04 09:00:00,惠州马拉松报名开启,9,1200000,https://example.com/weibo/5
+snap_011,抖音,2026-10-04 12:00:00,人工智能赋能制造业 惠州建设智能工厂,1,9100000,https://example.com/douyin/4
+snap_012,小红书,2026-10-05 10:00:00,惠州新建改扩建公办中小学和幼儿园 学位供给增加,1,520000,https://example.com/xhs/2
+snap_013,微博,2026-10-05 09:00:00,台风天惠州停课通知,2,3100000,https://example.com/weibo/6
+snap_014,微博,2026-10-06 09:00:00,大亚湾石化区向新材料基地转型 本质安全水平提升,12,890000,https://example.com/weibo/7
+snap_015,抖音,2026-10-06 12:00:00,惠州小伙摆摊日入过千,4,3800000,https://example.com/douyin/5
+snap_016,百度,2026-10-07 15:00:00,惠州公积金贷款新政策,3,760000,https://example.com/baidu/2
+snap_017,微博,2026-10-07 09:00:00,东江流域水质达标率100% 饮用水源有保障,8,1350000,https://example.com/weibo/8
+snap_018,小红书,2026-10-08 10:00:00,惠州推进老旧小区改造 建设完整社区,3,410000,https://example.com/xhs/3
+snap_019,抖音,2026-10-08 12:00:00,惠州夜市美食地图,3,5400000,https://example.com/douyin/6
+snap_020,微博,2026-10-09 09:00:00,惠州新增充电桩破万个,11,960000,https://example.com/weibo/9
+snap_021,百度,2026-10-10 15:00:00,惠州大力发展海洋经济 港口航运协同发展,2,820000,https://example.com/baidu/3
+snap_022,微博,2026-10-10 09:00:00,惠州人才公寓申请条件放宽 青年安居有保障,5,2100000,https://example.com/weibo/10
+snap_023,抖音,2026-10-11 12:00:00,惠州家长吐槽课后托管,6,2900000,https://example.com/douyin/7
+snap_024,小红书,2026-10-12 10:00:00,惠州秋日露营地推荐,4,380000,https://example.com/xhs/4
