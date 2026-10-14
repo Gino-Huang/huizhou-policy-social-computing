@@ -62,6 +62,14 @@ streamlit run app.py
 热点快照 CSV 按 schema 整理 → `src/ingestion/hotspot_collector.py`。
 数据字典见 [docs/data_dictionary.md](docs/data_dictionary.md)。
 
+> **Windows 用户注意（模型缓存位置）**：首次运行语义匹配时会自动下载约 420MB 的句向量模型，
+> 默认存放在 C 盘用户目录（`%USERPROFILE%\.cache\huggingface`）。如需放到 D 盘，运行前设置环境变量：
+> ```bat
+> setx HF_HOME "D:\huggingface_cache"
+> setx HUGGINGFACE_HUB_CACHE "D:\huggingface_cache"
+> ```
+> 设置后重新打开终端生效。仓库本身只含代码与小样本数据，不含模型文件，克隆不占多少空间。
+
 ## 仓库结构
 
 ```
