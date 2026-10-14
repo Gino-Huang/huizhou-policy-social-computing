@@ -82,8 +82,8 @@ policy_df, hot_df = load_samples()
 policy_texts = policy_df["text"].tolist()
 hot_titles = hot_df["title"].tolist()
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(
-    ["主题概览", "语义网络", "时间演化", "关注差异", "数据导出"]
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+    ["主题概览", "语义网络", "时间演化", "关注差异", "政策协同网络", "数据导出"]
 )
 
 # ---------------- 主题概览 ----------------
@@ -208,8 +208,89 @@ with tab4:
     st.write("关注差异表（gap = 热点占比 − 政策占比，正值表示公众更关注）：")
     st.dataframe(gt)
 
-# ---------------- 数据导出 ----------------
+# ---------------- 政策协同网络（原计划选题3主线：真实数据） ----------------
 with tab5:
+    st.subheader("政策主题协同网络（真实政策语料）")
+    st.caption("关键词共现网络 + 主题关联网络 · 共现/相似度只描述文本关联，不解释为因果或政策效果")
+    import json as _json
+
+    _syn_dir = ROOT / "data" / "processed"
+    _syn_json = _syn_dir / "synergy_summary.json"
+    if not _syn_json.exists():
+        st.info("尚未生成协同分析结果：请先运行 `python scripts/run_policy_synergy.py`。")
+    else:
+        syn = _json.loads(_syn_json.read_text(encoding="utf-8"))
+        tgraph = syn["topic_graph"]
+
+        st.write("**主题关联网络**（节点=15个政策主题，边权=TF-IDF中心向量余弦相似度，节点大小=中介中心性）")
+        t_edges = pd.read_csv(_syn_dir / "synergy_topic_edges.csv")
+        _tnames = syn["topic_names"]
+        _G = nx.from_pandas_edgelist(t_edges, "source", "target", ["weight"])
+        for _t in _tnames:  # 孤立主题（无边）也要保留节点
+            if _t not in _G:
+                _G.add_node(_t)
+        _tpos = nx.spring_layout(_G, seed=SEED, k=1.4)
+        _btw_map = {r["topic"]: r["betweenness"] for r in tgraph["betweenness_ranking"]}
+        _ex, _ey = [], []
+        for _, r in t_edges.iterrows():
+            x0, y0 = _tpos[r["source"]]; x1, y1 = _tpos[r["target"]]
+            _ex += [x0, x1, None]; _ey += [y0, y1, None]
+        _tfig = go.Figure()
+        _tfig.add_trace(go.Scatter(x=_ex, y=_ey, mode="lines",
+                                   line=dict(width=1, color="rgba(150,150,150,0.5)"),
+                                   hoverinfo="none", showlegend=False))
+        _tfig.add_trace(go.Scatter(
+            x=[_tpos[t][0] for t in _tnames], y=[_tpos[t][1] for t in _tnames],
+            mode="markers+text", text=_tnames, textposition="top center",
+            marker=dict(size=[14 + 90 * _btw_map.get(t, 0) for t in _tnames],
+                        color="#E8844C"),
+            hovertext=[f"{t}<br>中介中心性={_btw_map.get(t, 0):.3f}" for t in _tnames],
+            hoverinfo="text", showlegend=False))
+        _tfig.update_layout(height=520, title="政策主题关联网络",
+                            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+        st.plotly_chart(_tfig, use_container_width=True)
+
+        c1, c2 = st.columns(2)
+        with c1:
+            st.write("**中介中心性排名**（网络结构上的关键节点，不引申为政策建议）：")
+            st.dataframe(pd.DataFrame(tgraph["betweenness_ranking"]))
+        with c2:
+            st.write("**社群划分**（贪心模块度）：")
+            for c in tgraph["communities"]:
+                st.write(f"社群{c['community']}（{c['size']}主题）：{'、'.join(c['members'])}")
+
+        st.write("**关键词共现网络**（同段共现≥2次，展示中介中心性 top 40）：")
+        _kw_edges = pd.read_csv(_syn_dir / "synergy_keyword_edges.csv")
+        _kw_nodes = pd.read_csv(_syn_dir / "synergy_keyword_nodes.csv").head(40)
+        _keep = set(_kw_nodes["keyword"])
+        _ke = _kw_edges[_kw_edges["source"].isin(_keep) & _kw_edges["target"].isin(_keep)]
+        _kpos = nx.spring_layout(
+            nx.from_pandas_edgelist(_ke, "source", "target", ["weight"]), seed=SEED, k=1.1)
+        _kx, _ky = [], []
+        for _, r in _ke.iterrows():
+            x0, y0 = _kpos[r["source"]]; x1, y1 = _kpos[r["target"]]
+            _kx += [x0, x1, None]; _ky += [y0, y1, None]
+        _kfig = go.Figure()
+        _kfig.add_trace(go.Scatter(x=_kx, y=_ky, mode="lines",
+                                   line=dict(width=1, color="rgba(150,150,150,0.4)"),
+                                   hoverinfo="none", showlegend=False))
+        _kfig.add_trace(go.Scatter(
+            x=[_kpos[k][0] for k in _keep if k in _kpos],
+            y=[_kpos[k][1] for k in _keep if k in _kpos],
+            mode="markers+text",
+            text=[k for k in _keep if k in _kpos], textposition="top center",
+            marker=dict(size=10, color="#4C9BE8"),
+            hoverinfo="text", showlegend=False))
+        _kfig.update_layout(height=520, title="关键词共现网络（top 40 关键词）",
+                            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+        st.plotly_chart(_kfig, use_container_width=True)
+        st.write("关键词中介中心性 top 15：")
+        st.dataframe(_kw_nodes[["keyword", "df", "betweenness"]].head(15))
+
+# ---------------- 数据导出 ----------------
+with tab6:
     st.subheader("数据导出")
     st.download_button("下载政策片段 CSV",
                        policy_df.to_csv(index=False).encode("utf-8-sig"),
