@@ -2,14 +2,18 @@
 # 所有可调参数集中在此，避免散落在代码中。
 
 # 语义匹配模型（sentence-transformers），首次运行会在本地缓存下载
+# 2026-10-14 模型对决结论（reports/model_shootout_20261014.md）：
+# bge-small-zh-v1.5 在 120 对人工标注上严格 F1 0.308 vs 0.158，
+# 且消除了 ≥0.60 离群高分伪影，故切换默认模型。
 model:
-  name: "paraphrase-multilingual-MiniLM-L12-v2"
+  name: "BAAI/bge-small-zh-v1.5"
   device: "cpu"                 # "cpu" | "cuda"
   batch_size: 32
 
 # 语义匹配阈值与检索规模
+# 2026-10-14：阈值由 0.55 → 0.45（标注集严格口径 F1 最高点；见模型对决报告）
 matching:
-  similarity_threshold: 0.55   # 低于此阈值的边不进入语义网络
+  similarity_threshold: 0.45   # 低于此阈值的边不进入语义网络
   top_k: 5                     # 每个热点最多保留的政策段落数
   min_threshold: 0.0            # 阈值灵敏度扫描下限
 

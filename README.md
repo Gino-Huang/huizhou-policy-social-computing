@@ -50,34 +50,54 @@
 
 ```bash
 # 1. 克隆并安装
-git clone <your-repo-url>
+git clone https://github.com/Gino-Huang/huizhou-policy-social-computing.git
 cd huizhou-policy-social-computing
 pip install -r requirements.txt
 
 # 2. 跑通测试（模型延迟加载，测试不需要下载任何模型）
 pytest tests/ -q
 
-# 3. 启动交互仪表盘（使用 data/samples/ 合成演示数据）
+# 3. 真实数据全流程（按顺序；政策原文见 data/raw/SOURCES.md 自行下载放入 data/raw/）
+python scripts/run_real_analysis_v2.py   # 清洗→重切分→主题建模→语义匹配→网络→JSD（~5分钟）
+python scripts/run_policy_synergy.py      # 关键词共现 + 主题协同网络（主线）
+python scripts/score_annotations.py      # 阈值校准（需先填写标注 CSV 的 relevance 列）
+python scripts/model_shootout.py         # 模型对决（需下载对照模型）
+
+# 4. 启动交互仪表盘（默认 data/samples/ 合成演示数据；"政策协同网络"页读真实结果）
 streamlit run app.py
 ```
 
-真实数据流程：政策原文放入 `data/raw/` → `src/ingestion/policy_loader.py`；
-热点快照 CSV 按 schema 整理 → `src/ingestion/hotspot_collector.py`。
 数据字典见 [docs/data_dictionary.md](docs/data_dictionary.md)。
+热点快照采集：`scripts/save_hotspot_snapshot.py`（每日定时任务自动运行）。
 
-> **Windows 用户注意（模型缓存位置）**：首次运行语义匹配时会自动下载约 420MB 的句向量模型，
-> 默认存放在 C 盘用户目录（`%USERPROFILE%\.cache\huggingface`）。如需放到 D 盘，运行前设置环境变量：
+> **Windows 用户注意（模型缓存位置）**：首次运行语义匹配时会自动下载句向量模型
+> （默认 `BAAI/bge-small-zh-v1.5`，约 100MB），默认存放在 C 盘用户目录
+> （`%USERPROFILE%\.cache\huggingface`）。如需放到 D 盘，运行前设置环境变量：
 > ```bat
 > setx HF_HOME "D:\huggingface_cache"
 > setx HUGGINGFACE_HUB_CACHE "D:\huggingface_cache"
 > ```
 > 设置后重新打开终端生效。仓库本身只含代码与小样本数据，不含模型文件，克隆不占多少空间。
 
+## 交付物对照（原计划选题3）
+
+| 原计划交付物 | 本项目产物 |
+|---|---|
+| 政策主题分类 | 15 个 TF-IDF+KMeans 主题（863 段落），见 `reports/policy_synergy_20261014.md` §1 |
+| 关键词网络 | 关键词共现网络（239 节点/307 边），`reports/figures/fig4_keyword_network.svg` |
+| 主题关联图 | 主题关联网络（top-30 边）+ 社群划分，`reports/figures/fig5_topic_network.svg` |
+| 可交互分析页面 | Streamlit 6 页面（含"政策协同网络"），`streamlit run app.py` |
+
+分析报告：[方法说明](reports/methodology.md) · [协同分析](reports/policy_synergy_20261014.md) ·
+[首轮分析](reports/real_data_run_20261014.md) · [重切分调优](reports/real_data_run2_20261014.md) ·
+[标注指南](reports/ANNOTATION_GUIDE.md) · [阈值校准](reports/threshold_calibration.md) ·
+[模型对决](reports/model_shootout_20261014.md)
+
 ## 仓库结构
 
 ```
-├── app.py                  # Streamlit 仪表盘（5 个页面）
-├── configs/config.yaml     # 全局参数：模型、阈值、Top-K、平台、随机种子
+├── app.py                  # Streamlit 仪表盘（6 个页面）
+├── configs/config.yaml     # 全局参数：模型（bge-small-zh-v1.5）、阈值 0.45、Top-K、随机种子
 ├── data/
 │   ├── raw/                # 真实数据（gitignored，不提交）
 │   ├── processed/          # parquet 中间结果（gitignored）
@@ -104,10 +124,15 @@ streamlit run app.py
 
 ## 研究局限（必读）
 
-1. **热搜 ≠ 民意**：榜单是算法、运营与用户行为共同作用的结果，测量的是"被放大的公共注意力"，不是民意本身。
-2. **语义相似 ≠ 因果**：向量相似度高只说明语义接近，不能推出因果。本项目不做任何因果断言。
-3. **阈值依赖**：网络结构依赖相似度阈值（默认 0.55）；结论必须附带阈值灵敏度分析。
-4. **地域归因边界**：全国性热点可能与本地政策文本语义相近但事件本身非本地事务，需人工核验。
+1. **共现/相似度 ≠ 因果**：关键词共现与主题相似度只描述文本关联，不能推出
+   政策协同机制或政策效果。本项目不做任何因果断言。
+2. **主题建模弱**：TF-IDF+KMeans 轮廓系数仅 0.013，主题边界是近似的。
+3. **语义匹配是薄弱环节**：120 对人工标注显示，即使换用中文领域模型
+   （bge-small-zh-v1.5），严格口径精度也只有 0.22；阈值 0.45 来自单标注者
+   样本，外推需谨慎。详见 [模型对决报告](reports/model_shootout_20261014.md)。
+4. **热搜 ≠ 民意**（扩展模块）：榜单测量的是"被放大的公共注意力"，不是民意本身。
+5. **地域归因边界**：全国性热点可能与本地政策文本语义相近但事件本身非本地事务，需人工核验。
+6. **数据有限**：7 份政策文件；热点时间演化需 7~14 天快照积累，目前仍在积累中。
 
 完整版见 [docs/limitations.md](docs/limitations.md)。
 

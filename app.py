@@ -97,7 +97,7 @@ with tab1:
         dist.columns = ["topic", "count"]
         fig = px.bar(dist, x="topic", y="count", title="各主题政策段落数",
                      labels={"topic": "主题", "count": "段落数"})
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     with col2:
         st.metric("轮廓系数 Silhouette", f"{sil:.3f}")
         st.write("每主题代表性关键词：")
@@ -143,7 +143,7 @@ with tab2:
                       showlegend=True, height=550,
                       xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                       yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     st.write("政策段落加权度排名（连接热点的强度）：")
     rank = weighted_degree_ranking(G, kind="policy")[:10]
@@ -184,7 +184,7 @@ with tab3:
                                      name="爆发点", marker=dict(size=12, color="red", symbol="x")))
         fig.update_layout(title=f"主题 {topic_sel} 热点日计数与爆发检测",
                           xaxis_title="日期", yaxis_title="热点数")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     st.write("分平台热度（各平台独立标准化，**不跨平台求和**）：")
     hn = normalize_heat_per_platform(hot_df)
@@ -204,7 +204,7 @@ with tab4:
     fig = px.bar(gt, x="topic", y=["policy_share", "hotspot_share"],
                  barmode="group", title="政策 vs 热点主题分布",
                  labels={"value": "占比", "variable": "来源"})
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.write("关注差异表（gap = 热点占比 − 政策占比，正值表示公众更关注）：")
     st.dataframe(gt)
 
@@ -249,7 +249,7 @@ with tab5:
         _tfig.update_layout(height=520, title="政策主题关联网络",
                             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-        st.plotly_chart(_tfig, use_container_width=True)
+        st.plotly_chart(_tfig, width="stretch")
 
         c1, c2 = st.columns(2)
         with c1:
@@ -285,7 +285,7 @@ with tab5:
         _kfig.update_layout(height=520, title="关键词共现网络（top 40 关键词）",
                             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-        st.plotly_chart(_kfig, use_container_width=True)
+        st.plotly_chart(_kfig, width="stretch")
         st.write("关键词中介中心性 top 15：")
         st.dataframe(_kw_nodes[["keyword", "df", "betweenness"]].head(15))
 
