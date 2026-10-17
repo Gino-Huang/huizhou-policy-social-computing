@@ -100,8 +100,14 @@ def main():
         # Fluent Reader takes the card thumbnail from the FIRST <img> in the
         # description HTML (it ignores <enclosure>), so lead with our
         # re-hosted thumbnail. Source CDN images stay broken otherwise.
-        body = (f'<img src="{esc(img_url)}">\n{content}' if img_url
-                else content)
+        # Keep the description lean (thumbnail + excerpt): full pages are
+        # read via the article link anyway.
+        excerpt = re.sub(r"<[^>]+>", "", content or "")
+        excerpt = re.sub(r"\s+", " ", excerpt).strip()[:300]
+        body = (f'<img src="{esc(img_url)}">\n<p>{esc(excerpt)}…</p>\n'
+                f'<p><a href="{esc(link)}">阅读全文</a></p>' if img_url
+                else f"<p>{esc(excerpt)}…</p>\n"
+                     f'<p><a href="{esc(link)}">阅读全文</a></p>')
 
         rss_items.append(
             "  <item>\n"
