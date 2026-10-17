@@ -1,10 +1,11 @@
 """Generate an RSS 2.0 feed for 完美世界电竞 CS2 news.
 
-Runs inside GitHub Actions on a schedule. Fetches the public wmpvp API,
-re-hosts thumbnails (the source CDN blocks hotlinking) inside this repo,
-and writes cs2-news/feed.xml served via jsDelivr.
+Runs inside GitHub Actions on a schedule. Fetches the public wmpvp API and
+re-hosts every image in-repo (the source CDN blocks hotlinking), then writes
+cs2-news/feed.xml. Feed served via raw.githubusercontent.com; images via jsDelivr.
 """
 import datetime
+import hashlib
 import html
 import json
 import os
@@ -17,7 +18,6 @@ IMG_DIR = os.path.join(HERE, "images")
 MANIFEST_PATH = os.path.join(HERE, "manifest.json")
 FEED_PATH = os.path.join(HERE, "feed.xml")
 
-# jsDelivr serves every committed file in the repo at a stable URL.
 REPO = "Gino-Huang/huizhou-policy-social-computing"
 BRANCH = "main"
 CDN_BASE = f"https://cdn.jsdelivr.net/gh/{REPO}@{BRANCH}/cs2-news"
@@ -30,6 +30,7 @@ ARTICLE_URL = "https://news.wmpvp.com/news.html?id={nid}&gameTypeStr=2"
 
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 REFERER = dict(UA, Referer="https://news.wmpvp.com/")
+IMG_URL_RE = re.compile(r"https://cdn\.wmpvp\.com/[^\"'\s)]+")
 
 
 def fetch(url, headers=None, binary=False):
@@ -43,12 +44,44 @@ def esc(text):
     return html.escape(text or "", quote=False)
 
 
+def img_ext(data):
+    if data[:2] == b"\xff\xd8":
+        return ".jpg"
+    if data[:4] == b"\x89PNG":
+        return ".png"
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return ".webp"
+    if data[:4] in (b"GIF8",):
+        return ".gif"
+    return None
+
+
 def main():
     os.makedirs(IMG_DIR, exist_ok=True)
     manifest = {}
     if os.path.exists(MANIFEST_PATH):
         with open(MANIFEST_PATH, encoding="utf-8") as f:
             manifest = json.load(f)
+
+    def rehost(url, key):
+        """Download an image (with Referer) into images/, return public URL."""
+        if key in manifest:
+            return manifest[key]
+        try:
+            data = fetch(url, headers=REFERER, binary=True)
+            ext = img_ext(data)
+            if not ext:
+                raise ValueError("not an image")
+            fname = f"{key}{ext}"
+            with open(os.path.join(IMG_DIR, fname), "wb") as f:
+                f.write(data)
+            public = f"{CDN_BASE}/images/{fname}"
+            manifest[key] = public
+            print(f"saved image {key}")
+            return public
+        except Exception as e:  # noqa: BLE001 - keep going without this image
+            print(f"image fail {key}: {e}")
+            return None
 
     data = json.loads(fetch(LIST_API))
     news_items = [x["news"] for x in data.get("result", []) if x.get("news")]
@@ -69,45 +102,33 @@ def main():
         except (TypeError, ValueError):
             pub = format_datetime(datetime.datetime.now(datetime.timezone.utc))
 
-        # Full article body (HTML) from the detail API.
         content = ""
         try:
             det = json.loads(fetch(DETAIL_API.format(nid=nid)))
             content = det["result"]["news"].get("content") or ""
-        except Exception as e:  # noqa: BLE001 - keep the item even if body fails
+        except Exception as e:  # noqa: BLE001
             print(f"detail fail {nid}: {e}")
 
-        # Thumbnail: re-host in-repo so readers are not blocked by hotlink protection.
-        img_url = manifest.get(nid)
+        # Re-host thumbnail.
         thumb = n.get("thumbnail")
-        if not img_url and thumb:
-            try:
-                img_data = fetch(thumb, headers=REFERER, binary=True)
-                if img_data[:2] != b"\xff\xd8":
-                    raise ValueError("not a jpeg")
-                fname = f"{nid}.jpg"
-                with open(os.path.join(IMG_DIR, fname), "wb") as f:
-                    f.write(img_data)
-                img_url = f"{CDN_BASE}/images/{fname}"
-                manifest[nid] = img_url
-                print(f"saved thumbnail {nid}")
-            except Exception as e:  # noqa: BLE001
-                print(f"thumbnail fail {nid}: {e}")
+        img_url = rehost(thumb, nid) if thumb else None
+
+        # Re-host every image inside the article body.
+        def _swap(m):
+            url = m.group(0)
+            key = f"{nid}_{hashlib.md5(url.encode()).hexdigest()[:8]}"
+            return rehost(url, key) or url
+
+        content = IMG_URL_RE.sub(_swap, content)
 
         enclosure = (f'\n    <enclosure url="{esc(img_url)}" type="image/jpeg"/>'
                      if img_url else "")
 
         # Fluent Reader takes the card thumbnail from the FIRST <img> in the
         # description HTML (it ignores <enclosure>), so lead with our
-        # re-hosted thumbnail. Source CDN images stay broken otherwise.
-        # Keep the description lean (thumbnail + excerpt): full pages are
-        # read via the article link anyway.
-        excerpt = re.sub(r"<[^>]+>", "", content or "")
-        excerpt = re.sub(r"\s+", " ", excerpt).strip()[:300]
-        body = (f'<img src="{esc(img_url)}">\n<p>{esc(excerpt)}…</p>\n'
-                f'<p><a href="{esc(link)}">阅读全文</a></p>' if img_url
-                else f"<p>{esc(excerpt)}…</p>\n"
-                     f'<p><a href="{esc(link)}">阅读全文</a></p>')
+        # re-hosted thumbnail, then the full re-hosted article body.
+        lead = f'<img src="{esc(img_url)}">\n' if img_url else ""
+        body = lead + content
 
         rss_items.append(
             "  <item>\n"
@@ -140,7 +161,7 @@ def main():
     with open(MANIFEST_PATH, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=1)
     print(f"wrote {FEED_PATH} with {len(rss_items)} items, "
-          f"{len(manifest)} thumbnails cached")
+          f"{len(manifest)} images cached")
 
 
 if __name__ == "__main__":
