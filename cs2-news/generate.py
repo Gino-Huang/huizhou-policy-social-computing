@@ -97,6 +97,12 @@ def main():
         enclosure = (f'\n    <enclosure url="{esc(img_url)}" type="image/jpeg"/>'
                      if img_url else "")
 
+        # Fluent Reader takes the card thumbnail from the FIRST <img> in the
+        # description HTML (it ignores <enclosure>), so lead with our
+        # re-hosted thumbnail. Source CDN images stay broken otherwise.
+        body = (f'<img src="{esc(img_url)}">\n{content}' if img_url
+                else content)
+
         rss_items.append(
             "  <item>\n"
             f"    <title>{esc(title)}</title>\n"
@@ -104,7 +110,7 @@ def main():
             f"    <guid isPermaLink=\"true\">{esc(link)}</guid>\n"
             f"    <pubDate>{pub}</pubDate>\n"
             f"    <author>{esc(author)}</author>\n"
-            f"    <description><![CDATA[{content}]]></description>{enclosure}\n"
+            f"    <description><![CDATA[{body}]]></description>{enclosure}\n"
             "  </item>"
         )
 
