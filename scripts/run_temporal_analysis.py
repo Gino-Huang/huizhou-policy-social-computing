@@ -1,20 +1,25 @@
-"""时间演化首轮分析（2026-10-19）：6 天热点快照的时间序列分析。
+"""时间演化分析（可重跑）：热点快照时间序列分析。
+
+历史运行:
+  v1 = 2026-10-19，6 天（10-14→10-19），图 fig6*，汇总 temporal_summary_20261019.json
+  v2 = 2026-10-23，10 天（10-14→10-23），图 fig7*，汇总 temporal_summary_20261023.json
 
 输入:
-  data/raw/hotspots/snapshot_*.csv      # 6 天 × 60 条（微博30+百度30）
+  data/raw/hotspots/snapshot_*.csv      # 每日 × 60 条（微博30+百度30），自动 glob 全部
   data/processed/passages_v2.parquet    # 863 政策段落（BGE 匹配用）
   data/processed/policy_topics_v2.parquet  # 15 主题标签（TF-IDF+KMeans）
   configs/config.yaml                   # 模型 BAAI/bge-small-zh-v1.5, 阈值 0.45
 
 输出:
-  data/processed/temporal_summary_20261019.json  # 本地，gitignored
-  reports/figures/fig6a_jsd_trend.svg
-  reports/figures/fig6b_persistence.svg
-  reports/figures/fig6c_platform_overlap.svg
-  reports/figures/fig6d_bursts.svg
-  reports/temporal_analysis_20261019.md  # 由本脚本打印摘要后人工/脚本撰写
+  data/processed/temporal_summary_20261023.json  # 本地，gitignored
+  reports/figures/fig7a_jsd_trend.svg
+  reports/figures/fig7b_persistence.svg
+  reports/figures/fig7c_platform_overlap.svg
+  reports/figures/fig7d_bursts.svg（仅当检出爆发时生成）
+  reports/temporal_analysis_v2_20261023.md  # 据本脚本输出撰写
 
-方法说明见 reports/temporal_analysis_20261019.md §方法。
+方法说明见 reports/temporal_analysis_20261019.md（v1）与
+reports/temporal_analysis_v2_20261023.md（v2）。
 """
 from __future__ import annotations
 
@@ -36,6 +41,12 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
+
+# 本次运行标记：v1（6 天，2026-10-19）用 fig6* / temporal_summary_20261019.json；
+# v2（10 天，2026-10-23）用 fig7* / temporal_summary_20261023.json，避免覆盖 v1 产物。
+RUN_TAG = "v2"
+FIG_PREFIX = "fig7"
+SUMMARY_NAME = "temporal_summary_20261023.json"
 
 from src.analytics.temporal_analysis import (  # noqa: E402
     daily_platform_overlap,
@@ -104,10 +115,10 @@ def keyword_persistence(df: pd.DataFrame, min_len: int = 2) -> pd.DataFrame:
 
 
 def burst_scan(df: pd.DataFrame, z_threshold: float = 2.0) -> pd.DataFrame:
-    """分 (话题, 平台) 的 6 日热度 z-score 爆发检测。
+    """分 (话题, 平台) 的全程热度 z-score 爆发检测。
 
-    缺席日热度记 0；只对出现 ≥2 天的话题计算（单日话题的 z 恒≈2.24，
-    无信息量）。基线只有 6 个点，结果仅供参考。
+    缺席日热度记 0；只对出现 ≥2 天的话题计算（单日话题的 z 恒为
+    sqrt(天数-1)，无信息量）。基线点数 = 快照天数，结果仅供参考。
     """
     dates = sorted(df["date"].unique())
     rows = []
@@ -220,7 +231,9 @@ def main() -> None:
         print(f"{d}: matched {n_matched}/{len(day)}, JSD={daily_stats[-1]['jsd']}")
 
     # ---------- 4. 图 ----------
-    # 6a: JSD 趋势
+    n_days = len(dates)
+
+    # 7a: JSD 趋势
     fig, ax = plt.subplots(figsize=(8, 4.5))
     ds = pd.DataFrame(daily_stats)
     ax.plot(ds["date"], ds["jsd"], marker="o", label="JSD（政策‖当日匹配热点）")
@@ -228,25 +241,25 @@ def main() -> None:
         ax.annotate(f'{r["n_matched"]}/60', (r["date"], r["jsd"]),
                     textcoords="offset points", xytext=(0, 8), ha="center", fontsize=8)
     ax.set_ylabel("JSD")
-    ax.set_title("政策–热点主题分布差异（JSD）6 日趋势\n（标注：当日匹配热点数）")
+    ax.set_title(f"政策–热点主题分布差异（JSD）{n_days} 日趋势\n（标注：当日匹配热点数）")
     ax.tick_params(axis="x", rotation=20)
     ax.legend(fontsize=8)
     fig.tight_layout()
-    fig.savefig(fig_dir / "fig6a_jsd_trend.svg")
+    fig.savefig(fig_dir / f"{FIG_PREFIX}a_jsd_trend.svg")
     plt.close(fig)
 
-    # 6b: 关键词持续性 top-14（标题级持续性≈0，关键词级才有信息量）
+    # 7b: 关键词持续性 top-14（标题级持续性≈0，关键词级才有信息量）
     fig, ax = plt.subplots(figsize=(8, 5.5))
     kwtop = kw_persist.head(14).iloc[::-1]
     klabels = [f'{k}（{p}）' for k, p in zip(kwtop["keyword"], kwtop["platforms"])]
     ax.barh(klabels, kwtop["n_days"])
-    ax.set_xlabel("出现天数（6 天中）")
+    ax.set_xlabel(f"出现天数（{n_days} 天中）")
     ax.set_title("关键词跨日持续性 Top-14（jieba 分词，≥2字）")
     fig.tight_layout()
-    fig.savefig(fig_dir / "fig6b_persistence.svg")
+    fig.savefig(fig_dir / f"{FIG_PREFIX}b_persistence.svg")
     plt.close(fig)
 
-    # 6c: 平台重合度
+    # 7c: 平台重合度
     fig, ax = plt.subplots(figsize=(8, 4.5))
     ax.bar(overlap["date"], overlap["jaccard"])
     for _, r in overlap.iterrows():
@@ -256,26 +269,26 @@ def main() -> None:
     ax.set_title("微博–百度热搜标题重合度（按日，归一化标题）")
     ax.tick_params(axis="x", rotation=20)
     fig.tight_layout()
-    fig.savefig(fig_dir / "fig6c_platform_overlap.svg")
+    fig.savefig(fig_dir / f"{FIG_PREFIX}c_platform_overlap.svg")
     plt.close(fig)
 
-    # 6d: 爆发
+    # 7d: 爆发
     if not bursts.empty:
         fig, ax = plt.subplots(figsize=(8, 4.5))
         b = bursts.head(10).iloc[::-1]
         blabels = [f'{t[:12]}({p})' for t, p in zip(b["example_title"], b["platform"])]
         ax.barh(blabels, b["z_score"])
         ax.axvline(z_thr, color="red", linestyle="--", label=f"阈值 {z_thr}")
-        ax.set_xlabel("z-score（6 日基线，分平台）")
+        ax.set_xlabel(f"z-score（{n_days} 日基线，分平台）")
         ax.set_title("热度爆发检测 Top-10（仅出现≥2天的话题）")
         ax.legend(fontsize=8)
         fig.tight_layout()
-        fig.savefig(fig_dir / "fig6d_bursts.svg")
+        fig.savefig(fig_dir / f"{FIG_PREFIX}d_bursts.svg")
         plt.close(fig)
 
     # ---------- 5. 汇总落盘 ----------
     summary = {
-        "run": "temporal_v1",
+        "run": f"temporal_{RUN_TAG}",
         "date_range": [dates[0].isoformat(), dates[-1].isoformat()],
         "n_days": len(dates),
         "n_snapshots": len(files),
@@ -297,9 +310,9 @@ def main() -> None:
         ),
         "topic_names": topic_names,
     }
-    with open(out_dir / "temporal_summary_20261019.json", "w", encoding="utf-8") as f:
+    with open(out_dir / SUMMARY_NAME, "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
-    print("summary saved:", out_dir / "temporal_summary_20261019.json")
+    print("summary saved:", out_dir / SUMMARY_NAME)
 
 
 if __name__ == "__main__":
