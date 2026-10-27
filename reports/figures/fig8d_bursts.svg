@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="576pt" height="324pt" viewBox="0 0 576 324" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-27T05:42:49.769995</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 324 
+L 576 324 
+L 576 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 173.1625 281.74625 
+L 565.2 281.74625 
+L 565.2 27.52125 
+L 173.1625 27.52125 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 173.1625 270.190568 
+L 526.187721 270.190568 
+L 526.187721 167.473396 
+L 173.1625 167.473396 
+z
+" clip-path="url(#pdc1e8592fa)" style="fill: #1f77b4"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 173.1625 141.794104 
+L 546.531548 141.794104 
+L 546.531548 39.076932 
+L 173.1625 39.076932 
+z
+" clip-path="url(#pdc1e8592fa)" style="fill: #1f77b4"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m5a5878f0c2" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="173.1625" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="173.1625" y="297.54625" transform="rotate(-0 173.1625 297.54625)">0.0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="232.997283" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="232.997283" y="297.54625" transform="rotate(-0 232.997283 297.54625)">0.5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="292.832067" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="292.832067" y="297.54625" transform="rotate(-0 292.832067 297.54625)">1.0</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="352.66685" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="352.66685" y="297.54625" transform="rotate(-0 352.66685 297.54625)">1.5</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="412.501633" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="412.501633" y="297.54625" transform="rotate(-0 412.501633 297.54625)">2.0</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="472.336416" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="472.336416" y="297.54625" transform="rotate(-0 472.336416 297.54625)">2.5</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m5a5878f0c2" x="532.1712" y="281.74625" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="532.1712" y="297.54625" transform="rotate(-0 532.1712 297.54625)">3.0</text>
+     </g>
+    </g>
+    <g id="text_8">
+     <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="369.18125" y="311.54625" transform="rotate(-0 369.18125 311.54625)">z-score（14 日基线，分平台）</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_8">
+      <defs>
+       <path id="m325e638256" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m325e638256" x="173.1625" y="218.831982" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: end" x="166.1625" y="223.231982" transform="rotate(-0 166.1625 223.231982)">官方通报女子高铁开免提电(baidu)</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m325e638256" x="173.1625" y="90.435518" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: end" x="166.1625" y="94.835518" transform="rotate(-0 166.1625 94.835518)">金球奖(weibo)</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_10">
+    <path d="M 412.501633 281.74625 
+L 412.501633 27.52125 
+" clip-path="url(#pdc1e8592fa)" style="fill: none; stroke-dasharray: 5.55,2.4; stroke-dashoffset: 0; stroke: #ff0000; stroke-width: 1.5"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 173.1625 281.74625 
+L 173.1625 27.52125 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 565.2 281.74625 
+L 565.2 27.52125 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 173.1625 281.74625 
+L 565.2 281.74625 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 173.1625 27.52125 
+L 565.2 27.52125 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: middle" x="369.18125" y="21.52125" transform="rotate(-0 369.18125 21.52125)">热度爆发检测 Top-10（仅出现≥2天的话题）</text>
+   </g>
+   <g id="legend_1">
+    <g id="patch_9">
+     <path d="M 505.10375 161.83375 
+L 559.6 161.83375 
+Q 561.2 161.83375 561.2 160.23375 
+L 561.2 149.03375 
+Q 561.2 147.43375 559.6 147.43375 
+L 505.10375 147.43375 
+Q 503.50375 147.43375 503.50375 149.03375 
+L 503.50375 160.23375 
+Q 503.50375 161.83375 505.10375 161.83375 
+z
+" style="fill: #ffffff; opacity: 0.8; stroke: #cccccc; stroke-linejoin: miter"/>
+    </g>
+    <g id="line2d_11">
+     <path d="M 506.70375 154.87375 
+L 514.70375 154.87375 
+L 522.70375 154.87375 
+" style="fill: none; stroke-dasharray: 5.55,2.4; stroke-dashoffset: 0; stroke: #ff0000; stroke-width: 1.5"/>
+    </g>
+    <g id="text_12">
+     <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif; text-anchor: start" x="529.10375" y="157.67375" transform="rotate(-0 529.10375 157.67375)">阈值 2.0</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pdc1e8592fa">
+   <rect x="173.1625" y="27.52125" width="392.0375" height="254.225"/>
+  </clipPath>
+ </defs>
+</svg>
