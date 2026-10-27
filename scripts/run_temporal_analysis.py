@@ -3,6 +3,7 @@
 历史运行:
   v1 = 2026-10-19，6 天（10-14→10-19），图 fig6*，汇总 temporal_summary_20261019.json
   v2 = 2026-10-23，10 天（10-14→10-23），图 fig7*，汇总 temporal_summary_20261023.json
+  v3 = 2026-10-27，14 天（10-14→10-27），图 fig8*，汇总 temporal_summary_20261027.json
 
 输入:
   data/raw/hotspots/snapshot_*.csv      # 每日 × 60 条（微博30+百度30），自动 glob 全部
@@ -11,12 +12,12 @@
   configs/config.yaml                   # 模型 BAAI/bge-small-zh-v1.5, 阈值 0.45
 
 输出:
-  data/processed/temporal_summary_20261023.json  # 本地，gitignored
-  reports/figures/fig7a_jsd_trend.svg
-  reports/figures/fig7b_persistence.svg
-  reports/figures/fig7c_platform_overlap.svg
-  reports/figures/fig7d_bursts.svg（仅当检出爆发时生成）
-  reports/temporal_analysis_v2_20261023.md  # 据本脚本输出撰写
+  data/processed/temporal_summary_20261027.json  # 本地，gitignored
+  reports/figures/fig8a_jsd_trend.svg
+  reports/figures/fig8b_persistence.svg
+  reports/figures/fig8c_platform_overlap.svg
+  reports/figures/fig8d_bursts.svg（仅当检出爆发时生成）
+  reports/temporal_analysis_v3_20261027.md  # 据本脚本输出撰写
 
 方法说明见 reports/temporal_analysis_20261019.md（v1）与
 reports/temporal_analysis_v2_20261023.md（v2）。
@@ -43,10 +44,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 # 本次运行标记：v1（6 天，2026-10-19）用 fig6* / temporal_summary_20261019.json；
-# v2（10 天，2026-10-23）用 fig7* / temporal_summary_20261023.json，避免覆盖 v1 产物。
-RUN_TAG = "v2"
-FIG_PREFIX = "fig7"
-SUMMARY_NAME = "temporal_summary_20261023.json"
+# v2（10 天，2026-10-23）用 fig7* / temporal_summary_20261023.json；
+# v3（14 天，2026-10-27）用 fig8* / temporal_summary_20261027.json，避免覆盖旧产物。
+RUN_TAG = "v3"
+FIG_PREFIX = "fig8"
+SUMMARY_NAME = "temporal_summary_20261027.json"
 
 from src.analytics.temporal_analysis import (  # noqa: E402
     daily_platform_overlap,
