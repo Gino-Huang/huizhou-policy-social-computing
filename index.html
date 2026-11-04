@@ -3,142 +3,339 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>惠州未来五年：政府想干什么，老百姓在聊什么？</title>
+<title>惠州政策智能实验室：政策重点与社会关注有多接近？</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="public-data/data.js"></script>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-    background: #f7f5f0; color: #222; line-height: 1.8; }
-  .hero { background: linear-gradient(135deg, #1a6b4a, #2a9d6e); color: #fff;
-    padding: 52px 24px 44px; text-align: center; }
-  .hero h1 { margin: 0 auto 10px; font-size: 30px; line-height: 1.4; max-width: 820px; }
-  .hero p { margin: 6px auto; max-width: 720px; opacity: .95; font-size: 16px; }
-  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px 56px; }
-  .card { background: #fff; border-radius: 16px; padding: 24px 26px; margin-top: 22px;
+    background: #f4f6f3; color: #1f2937; line-height: 1.8; }
+  nav { position: sticky; top: 0; z-index: 10; background: #0f172a; color: #fff;
+    display: flex; align-items: center; gap: 4px; padding: 0 16px; overflow-x: auto; }
+  nav .brand { font-weight: 700; font-size: 14px; letter-spacing: 1px; white-space: nowrap;
+    margin-right: 12px; color: #6ee7b7; }
+  nav a { color: #e2e8f0; text-decoration: none; font-size: 15px; white-space: nowrap;
+    padding: 0 14px; min-height: 48px; display: flex; align-items: center; }
+  nav a:hover { color: #fff; background: #1e293b; }
+  .hero { background: linear-gradient(135deg, #0f172a, #14532d); color: #fff;
+    padding: 56px 24px 48px; text-align: center; }
+  .hero .en { letter-spacing: 3px; font-size: 13px; color: #6ee7b7; }
+  .hero h1 { margin: 12px auto; font-size: 30px; line-height: 1.4; max-width: 820px; }
+  .hero p { margin: 8px auto; max-width: 720px; opacity: .92; font-size: 16px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+  .stat { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    border-radius: 12px; padding: 14px 20px; min-width: 130px; }
+  .stat b { display: block; font-size: 28px; color: #6ee7b7; }
+  .stat span { font-size: 13px; opacity: .85; }
+  .version { margin-top: 18px; font-size: 13px; opacity: .75; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px 56px; }
+  .card { background: #fff; border-radius: 16px; padding: 26px 28px; margin-top: 24px;
     box-shadow: 0 2px 12px rgba(0,0,0,.06); }
-  h2 { font-size: 20px; margin: 0 0 4px; color: #1a6b4a; }
+  h2 { font-size: 21px; margin: 0 0 4px; color: #14532d; }
   .cap { color: #666; font-size: 14px; margin: 0 0 8px; }
+  .badge { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px;
+    padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+  .badge.real { background: #dcfce7; color: #166534; }
+  .badge.missing { background: #fee2e2; color: #991b1b; }
   .chart { width: 100%; height: 420px; }
   .chart.tall { height: 520px; }
-  .tip { font-size: 13px; color: #888; text-align: center; margin-top: 4px; }
+  .detail { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px;
+    padding: 16px 20px; margin-top: 12px; }
+  .detail h3 { margin: 0 0 6px; font-size: 17px; color: #14532d; }
+  .warn { background: #fffbeb; border: 1px solid #fcd34d; border-left: 5px solid #d97706;
+    border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 14px 0; }
+  .note { background: #eff6ff; border-left: 5px solid #2563eb; border-radius: 0 12px 12px 0;
+    padding: 14px 18px; margin: 14px 0; }
+  details.drawer { border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px 18px; margin-top: 14px; }
+  details.drawer summary { cursor: pointer; font-weight: 700; color: #14532d; min-height: 44px;
+    display: flex; align-items: center; }
+  details.drawer dl { margin: 8px 0 0; font-size: 14px; }
+  details.drawer dt { font-weight: 700; margin-top: 8px; }
+  details.drawer dd { margin: 0 0 4px; color: #444; }
+  .match { border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 18px; margin: 10px 0; cursor: pointer; }
+  .match:hover { border-color: #2a9d6e; }
+  .match .passage { display: none; margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed #d1d5db; font-size: 14px; color: #444; }
+  .match.open .passage { display: block; }
+  .match .hint { font-size: 12px; color: #888; }
+  .burst { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+  .burst .b { flex: 1 1 300px; border-radius: 12px; padding: 16px 20px; }
+  .burst .real { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .burst .teach { background: #fffbeb; border: 1px solid #fcd34d; }
+  table.limits { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.limits th, table.limits td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
+  table.limits th { background: #f0fdf4; color: #14532d; }
   .foot { text-align: center; color: #777; font-size: 13px; margin-top: 36px; line-height: 1.9; }
-  .foot a { color: #1a6b4a; }
-  @media (max-width: 600px) { .hero h1 { font-size: 23px; } .card { padding: 18px; } .chart { height: 360px; } }
+  .foot a { color: #14532d; }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 23px; } .card { padding: 18px; } .chart { height: 360px; }
+    .chart.tall { height: 440px; } nav a { padding: 0 10px; font-size: 14px; }
+  }
 </style>
 </head>
 <body>
+<nav>
+  <span class="brand">惠州政策智能实验室</span>
+  <a href="#topics">政策主题地图</a>
+  <a href="#network">政策关系网络</a>
+  <a href="#comparison">政策与热点对照</a>
+  <a href="#temporal">时间演化实验</a>
+  <a href="#limits">方法与局限</a>
+</nav>
+
 <div class="hero">
-  <h1>惠州未来五年：政府想干什么，老百姓在聊什么？</h1>
-  <p>读完 7 份政府规划，对比 14 天热搜，用 6 张图讲清楚。拖动可以玩，鼠标悬停能看到数字。</p>
+  <div class="en">HUIZHOU POLICY INTELLIGENCE LAB</div>
+  <h1>惠州的政策重点，与社会关注的话题，有多接近？</h1>
+  <p>从政策文本出发，探索主题结构、语义联系，以及公共平台热点与政策议程之间的差异。</p>
+  <div class="stats">
+    <div class="stat"><b id="m-passages">—</b><span>个政策段落</span></div>
+    <div class="stat"><b id="m-topics">—</b><span>个识别主题</span></div>
+    <div class="stat"><b id="m-days">—</b><span>天热点快照</span></div>
+    <div class="stat"><b id="m-titles">—</b><span>条热点标题</span></div>
+  </div>
+  <div class="version" id="m-version">数据加载中……</div>
 </div>
 
 <div class="wrap">
 
-<div class="card">
-<h2>1 · 规划里 15 个话题各占多少篇幅</h2>
-<p class="cap">城市建设一枝独秀（141 段），海洋旅游、养老医疗紧随其后。</p>
-<div id="c1" class="chart"></div>
+<div class="card" id="topics">
+  <h2>政策主题地图 <span class="badge real" data-badge>真实数据</span></h2>
+  <p class="cap">回答“政策关注什么”。点击任意主题，查看它的关键词、规模和占比。</p>
+  <div id="c-topics" class="chart"></div>
+  <div class="detail" id="topic-detail">点一下上面的柱子，这里会显示该主题的详情。</div>
+  <details class="drawer"><summary>查看证据：来源、方法与口径</summary>
+    <dl>
+      <dt>来源</dt><dd>惠州市政府官网公开的 7 份政策文件（“十五五”规划纲要及配套文件），拆分为 863 个段落。</dd>
+      <dt>方法</dt><dd>TF-IDF + KMeans 聚类识别 15 个主题；段落数即该主题包含的规划段落数量。</dd>
+      <dt>口径</dt><dd>占比 = 主题段落数 / 863。主题名由该主题最高频关键词概括。</dd>
+      <dt>对应报告</dt><dd>reports/policy_synergy_20261014.md</dd>
+      <dt>局限</dt><dd>主题是算法聚类的结果，边界由模型决定，不等于官方正式分类。</dd>
+    </dl>
+  </details>
 </div>
 
-<div class="card">
-<h2>2 · 哪些话题经常一起出现</h2>
-<p class="cap">点越大表示这个话题在规划里篇幅越大；线越粗表示两个话题越经常一起出现。可以拖动。</p>
-<div id="c2" class="chart tall"></div>
-<div class="tip">城市建设是整张网的中心，一边连民生，一边连产业。</div>
+<div class="card" id="network">
+  <h2>政策关系网络 <span class="badge real" data-badge>真实数据</span></h2>
+  <p class="cap">回答“主题如何连接”。点越大表示该主题在网络中的中介中心性越高；线越粗表示两个主题越经常一起出现；颜色区分主题社群。可以拖动。</p>
+  <div id="c-network" class="chart tall"></div>
+  <div class="note"><b>怎么读这张图：</b>城乡建设是文本网络中的枢纽——很多主题之间的最短路径都经过它。但这只是<b>文本语义结构</b>中的枢纽，<b>不直接等同于现实中的跨部门协同机制</b>，共现不等于因果。</div>
+  <div class="detail" id="network-detail">点一下上面的节点，这里会显示该主题的关键词、中心性和最强连接。</div>
+  <details class="drawer"><summary>查看证据：来源、方法与口径</summary>
+    <dl>
+      <dt>来源</dt><dd>同一 863 段规划文本的主题中心向量与关键词共现关系。</dd>
+      <dt>方法</dt><dd>主题中心向量余弦相似度取前 30 条边；中介中心性衡量节点在最短路径上的枢纽程度；社群由社群发现算法划分。</dd>
+      <dt>口径</dt><dd>节点大小 = 中介中心性；边粗细 = 主题相似度（0–1）。</dd>
+      <dt>对应报告</dt><dd>reports/policy_synergy_20261014.md</dd>
+      <dt>局限</dt><dd>语义相似不等于政策协同或现实因果；社群划分随算法参数变化。</dd>
+    </dl>
+  </details>
 </div>
 
-<div class="card">
-<h2>3 · 规划里的关键词网络</h2>
-<p class="cap">239 个关键词、307 条共现关系。产业、人工智能是最大的两个枢纽。可以拖动、放大。</p>
-<div id="c3" class="chart tall"></div>
+<div class="card" id="comparison">
+  <h2>政策与热点对照 <span class="badge real" data-badge>真实数据</span></h2>
+  <p class="cap">回答“政策议程与平台注意力差在哪里”。绿色是规划里各主题的占比，琥珀色是被匹配上的热点里各主题的占比。</p>
+  <div id="c-compare" class="chart"></div>
+  <div class="stats" style="margin-top:12px">
+    <div class="stat" style="background:#f0fdf4;border-color:#bbf7d0"><b id="m-matchrate" style="color:#14532d">—</b><span style="color:#444">热点被匹配上</span></div>
+    <div class="stat" style="background:#f0fdf4;border-color:#bbf7d0"><b id="m-jsdmean" style="color:#14532d">—</b><span style="color:#444">平均差距值</span></div>
+    <div class="stat" style="background:#f0fdf4;border-color:#bbf7d0"><b id="m-jsdrange" style="color:#14532d">—</b><span style="color:#444">差距值区间</span></div>
+  </div>
+  <div class="warn"><b>可信度提示：</b>语义匹配严格口径精度约为 0.22。当前自动关联结果适合方法演示和探索线索，<b>不适合直接作为惠州市民真实需求的可靠判断</b>。热搜是平台放大的注意力，不等于惠州市民的真实民意。</div>
+  <h3 style="font-size:17px;color:#14532d">匹配样例（点一下展开政策原文）</h3>
+  <div id="match-list"></div>
+  <details class="drawer"><summary>查看证据：来源、方法与口径</summary>
+    <dl>
+      <dt>来源</dt><dd>每日微博、百度热搜前 30 名（2026-10-14 至 2026-10-27，共 840 条）与 863 段规划文本的语义匹配。</dd>
+      <dt>方法</dt><dd>BGE 中文向量模型计算相似度，阈值 0.45；匹配上的热点按其政策主题归类。</dd>
+      <dt>口径</dt><dd>匹配率 = 被匹配上的热点 / 全部热点；差距值衡量政策主题分布与当日匹配热点分布的差异，越大差异越大。</dd>
+      <dt>对应报告</dt><dd>reports/real_data_run3_20261015.md、reports/temporal_analysis_v3_20261027.md、reports/model_shootout_20261014.md</dd>
+      <dt>局限</dt><dd>严格口径精度约 0.22，约 10 对里只有 2 对经得起人工检查；热搜不等于民意。</dd>
+    </dl>
+  </details>
 </div>
 
-<div class="card">
-<h2>4 · 14 天里，政府和热搜的“差距值”</h2>
-<p class="cap">差距值小 = 当天大家聊的和政府重视的比较贴近；上下波动，没有固定方向。</p>
-<div id="c4" class="chart"></div>
+<div class="card" id="temporal">
+  <h2>时间演化实验 <span class="badge real" data-badge>真实数据</span></h2>
+  <p class="cap">回答“注意力差异如何变化”。差距值上下波动，没有固定方向；标题天天换，但少数话题能连续霸榜。</p>
+  <div id="c-jsd" class="chart"></div>
+  <div id="c-overlap" class="chart"></div>
+  <p class="cap" style="text-align:center">微博与百度每天榜单标题的重合度：几乎都在 10% 以下，一半的日子是 0。</p>
+  <div id="c-persist" class="chart"></div>
+  <p class="cap" style="text-align:center">在热搜上活得最久的 12 个词。</p>
+  <h3 style="font-size:17px;color:#14532d">爆发检测：两个案例，一个教学点</h3>
+  <div class="burst">
+    <div class="b real"><b>金球奖 · 真实爆发</b><br>2026-10-27 微博，强度 z=3.12。当天正是 2026 金球奖颁奖日，5 条微博标题 + 2 条百度标题同时出现——算法报警与真实事件对得上。</div>
+    <div class="b teach"><b>高铁免提 · 教学案例</b><br>2026-10-14 百度，强度 z=2.95。它触发报警不是因为新爆发，而是因为它位于窗口左缘、正在衰减——这就是“为什么不能只看算法报警”：只看分数会把旧事当新闻。</div>
+  </div>
+  <details class="drawer"><summary>查看证据：来源、方法与口径</summary>
+    <dl>
+      <dt>来源</dt><dd>2026-10-14 至 2026-10-27 每日微博、百度热搜前 30 名，共 840 条。</dd>
+      <dt>方法</dt><dd>每日计算政策与匹配热点的差距值；标题归一化后统计跨日持续性；爆发检测用零填充 z 分数。</dd>
+      <dt>口径</dt><dd>重合度 = 两榜共有标题 / 去重后标题总数；持续性 = 同一归一化标题出现的天数。</dd>
+      <dt>对应报告</dt><dd>reports/temporal_analysis_v3_20261027.md</dd>
+      <dt>局限</dt><dd>14 天窗口仍短，日级波动以探索为主；零填充 z 分数对窗口边缘的旧事件过于敏感。</dd>
+    </dl>
+  </details>
 </div>
 
-<div class="card">
-<h2>5 · 哪些词在热搜上活得最久</h2>
-<p class="cap">标题天天换，但这些词反复出现——真正的大事还是能连续霸榜。</p>
-<div id="c5" class="chart"></div>
+<div class="card" id="limits">
+  <h2>方法与局限</h2>
+  <p class="cap">这个项目的可信度不来自讲一个确定性的故事，而来自清楚说明算法能解释什么、不能解释什么。</p>
+  <table class="limits">
+    <tr><th>局限</th><th>页面如何处理</th></tr>
+    <tr><td>语义相似不等于政策协同或现实因果</td><td>网络图旁固定提示，证据抽屉中详细解释</td></tr>
+    <tr><td>热搜不等于惠州市民真实民意</td><td>热点对照模块顶部警示卡，说明热搜是平台放大的注意力</td></tr>
+    <tr><td>语义匹配精度仍偏低</td><td>标注严格口径精度约 0.22，不把自动匹配作为确定性判断</td></tr>
+    <tr><td>研究语料和人工标注样本有限</td><td>说明当前只有 7 份政策文件、120 对标注样本和 14 天热点快照</td></tr>
+    <tr><td>合成样本与真实数据边界不同</td><td>所有数据卡片明确标注真实数据；本页不使用合成样本</td></tr>
+    <tr><td>时间窗口仍短</td><td>日级差距值波动以探索为主，趋势结论需更长样本积累</td></tr>
+  </table>
+  <div class="note" style="margin-top:16px"><b>双入口：</b>本页是面向普通访问者的展示层；研究者想复现实验、调参数、导出数据，请用仓库里的 Streamlit 研究仪表盘（<code>streamlit run app.py</code>），分析脚本、测试与报告全部保留。</div>
 </div>
 
-<div class="card">
-<h2>6 · 微博和百度聊的有多不一样</h2>
-<p class="cap">每天两个榜单标题的重合度：几乎都在 10% 以下，一半的日子是 0——它们量的是两拨人的注意力。</p>
-<div id="c6" class="chart"></div>
+<div class="foot">
+  <p>完整代码、详细报告与方法说明：<a href="https://github.com/Gino-Huang/huizhou-policy-social-computing">https://github.com/Gino-Huang/huizhou-policy-social-computing</a></p>
+  <p>作者：大数据专业学生 · 求职作品集 · 数据来源均为公开资料</p>
 </div>
 
-<div class="card">
-<h2>一句话总结</h2>
-<p>政府最重视城市建设，城市建设也是连接最多话题的枢纽；老百姓的注意力换得很快，微博和百度各聊各的；两者之间的差距每天波动，没有越变越大或越变越小。数字仅供参考——电脑配对还不太准，热搜也不等于民意。</p>
-<p style="font-size:13px;color:#777">数据来源：7 份惠州政府公开文件（863 段规划原文）＋ 2026-10-14 至 10-27 每日微博、百度热搜前 30 名。完整代码与详细报告：<a href="https://github.com/Gino-Huang/huizhou-policy-social-computing">https://github.com/Gino-Huang/huizhou-policy-social-computing</a></p>
 </div>
-
-<div class="foot"><p>作者：大数据专业学生 · 求职作品集</p></div>
-</div>
-
 <script>
-const T = {"names": ["\u6295\u8d44\u6539\u9769", "\u7eff\u8272\u6d88\u8d39", "\u6cd5\u6cbb\u601d\u60f3", "\u5b89\u5168\u6d89\u5916", "\u7ecf\u6d4e\u589e\u957f", "\u884c\u653f\u6267\u6cd5", "\u5e02\u573a\u7acb\u6cd5", "\u6559\u80b2\u5c31\u4e1a", "\u4f01\u4e1a\u4eba\u624d", "\u79d1\u6280\u521b\u65b0", "\u5de5\u7a0b\u89c4\u5212", "\u65b0\u6750\u6599\u667a\u80fd", "\u517b\u8001\u533b\u7597", "\u6d77\u6d0b\u65c5\u6e38", "\u57ce\u4e61\u5efa\u8bbe"], "sizes": [30, 31, 37, 41, 42, 42, 43, 49, 50, 55, 65, 67, 76, 94, 141], "kw": ["\u6295\u8d44/\u653f\u5e9c/\u670d\u52a1", "\u6d88\u8d39/\u7eff\u8272/\u4f4e\u78b3", "\u6cd5\u6cbb/\u5e7f\u4e1c/\u653f\u5e9c", "\u5b89\u5168/\u6d89\u5916/\u56fd\u5bb6", "\u589e\u957f/\u4ebf\u5143/\u5168\u7701", "\u884c\u653f/\u6267\u6cd5/\u4e8b\u9879", "\u5e02\u573a/\u7acb\u6cd5/\u6539\u9769", "\u6559\u80b2/\u5b66\u6821/\u5c31\u4e1a", "\u4f01\u4e1a/\u4eba\u624d/\u57f9\u80b2", "\u521b\u65b0/\u79d1\u6280/\u5e73\u53f0", "\u5de5\u7a0b/\u53d1\u5c55/\u89c4\u5212", "\u6750\u6599/\u667a\u80fd/\u4eba\u5de5\u667a\u80fd", "\u670d\u52a1/\u517b\u8001/\u5065\u5eb7", "\u6d77\u6d0b/\u53d1\u5c55/\u4ea7\u4e1a", "\u5efa\u8bbe/\u63a8\u8fdb/\u57ce\u5e02"]};
-const TN = [{"name": "企业人才", "value": 50, "symbolSize": 35.5}, {"name": "教育就业", "value": 49, "symbolSize": 35.15}, {"name": "科技创新", "value": 55, "symbolSize": 37.25}, {"name": "海洋旅游", "value": 94, "symbolSize": 50.9}, {"name": "新材料智能", "value": 67, "symbolSize": 41.45}, {"name": "工程规划", "value": 65, "symbolSize": 40.75}, {"name": "城乡建设", "value": 141, "symbolSize": 67.35}, {"name": "养老医疗", "value": 76, "symbolSize": 44.599999999999994}, {"name": "投资改革", "value": 30, "symbolSize": 28.5}, {"name": "法治思想", "value": 37, "symbolSize": 30.95}, {"name": "安全涉外", "value": 41, "symbolSize": 32.35}, {"name": "经济增长", "value": 42, "symbolSize": 32.7}, {"name": "绿色消费", "value": 31, "symbolSize": 28.85}, {"name": "行政执法", "value": 42, "symbolSize": 32.7}, {"name": "市场立法", "value": 43, "symbolSize": 33.05}];
-const TL = [{"source": "海洋旅游", "target": "城乡建设", "value": 0.497}, {"source": "投资改革", "target": "市场立法", "value": 0.486}, {"source": "海洋旅游", "target": "工程规划", "value": 0.484}, {"source": "城乡建设", "target": "养老医疗", "value": 0.47}, {"source": "工程规划", "target": "城乡建设", "value": 0.456}, {"source": "科技创新", "target": "海洋旅游", "value": 0.439}, {"source": "企业人才", "target": "科技创新", "value": 0.424}, {"source": "科技创新", "target": "新材料智能", "value": 0.423}, {"source": "养老医疗", "target": "市场立法", "value": 0.4}, {"source": "教育就业", "target": "养老医疗", "value": 0.4}, {"source": "城乡建设", "target": "市场立法", "value": 0.397}, {"source": "科技创新", "target": "城乡建设", "value": 0.368}, {"source": "海洋旅游", "target": "新材料智能", "value": 0.367}, {"source": "工程规划", "target": "养老医疗", "value": 0.365}, {"source": "海洋旅游", "target": "市场立法", "value": 0.363}, {"source": "海洋旅游", "target": "养老医疗", "value": 0.363}, {"source": "教育就业", "target": "城乡建设", "value": 0.359}, {"source": "企业人才", "target": "海洋旅游", "value": 0.351}, {"source": "工程规划", "target": "法治思想", "value": 0.349}, {"source": "城乡建设", "target": "安全涉外", "value": 0.347}, {"source": "工程规划", "target": "市场立法", "value": 0.342}, {"source": "城乡建设", "target": "绿色消费", "value": 0.342}, {"source": "海洋旅游", "target": "绿色消费", "value": 0.336}, {"source": "企业人才", "target": "新材料智能", "value": 0.33}, {"source": "养老医疗", "target": "安全涉外", "value": 0.329}, {"source": "安全涉外", "target": "市场立法", "value": 0.328}, {"source": "教育就业", "target": "海洋旅游", "value": 0.319}, {"source": "企业人才", "target": "城乡建设", "value": 0.312}, {"source": "教育就业", "target": "市场立法", "value": 0.311}, {"source": "城乡建设", "target": "投资改革", "value": 0.311}];
-const KN = [{"name": "产业", "value": 0.206, "symbolSize": 24.540416396708288}, {"name": "人工智能", "value": 0.17, "symbolSize": 21.308313428938895}, {"name": "政府", "value": 0.136, "symbolSize": 18.277963659571995}, {"name": "材料", "value": 0.129, "symbolSize": 17.572119987235396}, {"name": "文化", "value": 0.126, "symbolSize": 17.373137287135798}, {"name": "行政", "value": 0.117, "symbolSize": 16.566907775768534}, {"name": "教育", "value": 0.111, "symbolSize": 15.994144723482023}, {"name": "增长", "value": 0.102, "symbolSize": 15.220034619141098}, {"name": "企业", "value": 0.102, "symbolSize": 15.219381883938851}, {"name": "投资", "value": 0.098, "symbolSize": 14.785409675953233}, {"name": "特色", "value": 0.089, "symbolSize": 14.04966589627796}, {"name": "机器人", "value": 0.084, "symbolSize": 13.53759754764967}, {"name": "管理", "value": 0.083, "symbolSize": 13.469389136552204}, {"name": "规划", "value": 0.081, "symbolSize": 13.309116051483883}, {"name": "能源", "value": 0.08, "symbolSize": 13.218381023295393}, {"name": "扩大", "value": 0.0, "symbolSize": 6.0}, {"name": "思想", "value": 0.0, "symbolSize": 6.0}, {"name": "新型", "value": 0.0, "symbolSize": 6.0}, {"name": "城市群", "value": 0.0, "symbolSize": 6.0}, {"name": "项目", "value": 0.0, "symbolSize": 6.0}, {"name": "整治", "value": 0.0, "symbolSize": 6.0}, {"name": "发展", "value": 0.0, "symbolSize": 6.0}, {"name": "全省", "value": 0.0, "symbolSize": 6.0}, {"name": "流域", "value": 0.0, "symbolSize": 6.0}, {"name": "工程", "value": 0.0, "symbolSize": 6.0}, {"name": "拓展", "value": 0.0, "symbolSize": 6.0}, {"name": "科技人才", "value": 0.0, "symbolSize": 6.0}, {"name": "协同", "value": 0.0, "symbolSize": 6.0}, {"name": "创业", "value": 0.0, "symbolSize": 6.0}, {"name": "文旅", "value": 0.0, "symbolSize": 6.0}, {"name": "涉企", "value": 0.0, "symbolSize": 6.0}, {"name": "研发", "value": 0.0, "symbolSize": 6.0}, {"name": "市场", "value": 0.0, "symbolSize": 6.0}, {"name": "转化", "value": 0.0, "symbolSize": 6.0}, {"name": "海上", "value": 0.0, "symbolSize": 6.0}, {"name": "迈上", "value": 0.0, "symbolSize": 6.0}, {"name": "亿元", "value": 0.0, "symbolSize": 6.0}, {"name": "医疗", "value": 0.0, "symbolSize": 6.0}, {"name": "全国", "value": 0.0, "symbolSize": 6.0}, {"name": "就业", "value": 0.0, "symbolSize": 6.0}, {"name": "维护", "value": 0.0, "symbolSize": 6.0}, {"name": "风电", "value": 0.0, "symbolSize": 6.0}, {"name": "千镇", "value": 0.0, "symbolSize": 6.0}, {"name": "产教", "value": 0.0, "symbolSize": 6.0}, {"name": "服务", "value": 0.0, "symbolSize": 6.0}, {"name": "法治", "value": 0.0, "symbolSize": 6.0}, {"name": "单位", "value": 0.0, "symbolSize": 6.0}, {"name": "交流", "value": 0.0, "symbolSize": 6.0}, {"name": "开发", "value": 0.0, "symbolSize": 6.0}, {"name": "设计", "value": 0.0, "symbolSize": 6.0}, {"name": "工作", "value": 0.0, "symbolSize": 6.0}, {"name": "英才", "value": 0.0, "symbolSize": 6.0}, {"name": "规范", "value": 0.0, "symbolSize": 6.0}, {"name": "保护", "value": 0.0, "symbolSize": 6.0}, {"name": "制造业", "value": 0.0, "symbolSize": 6.0}, {"name": "决策", "value": 0.0, "symbolSize": 6.0}, {"name": "结构性", "value": 0.0, "symbolSize": 6.0}, {"name": "全市", "value": 0.0, "symbolSize": 6.0}, {"name": "重点", "value": 0.0, "symbolSize": 6.0}, {"name": "城际", "value": 0.0, "symbolSize": 6.0}, {"name": "提升", "value": 0.0, "symbolSize": 6.0}, {"name": "比重", "value": 0.0, "symbolSize": 6.0}, {"name": "红色", "value": 0.0, "symbolSize": 6.0}, {"name": "人口", "value": 0.0, "symbolSize": 6.0}, {"name": "根本", "value": 0.0, "symbolSize": 6.0}, {"name": "公共卫生", "value": 0.0, "symbolSize": 6.0}, {"name": "园区", "value": 0.0, "symbolSize": 6.0}, {"name": "广东", "value": 0.0, "symbolSize": 6.0}, {"name": "医院", "value": 0.0, "symbolSize": 6.0}, {"name": "学生", "value": 0.0, "symbolSize": 6.0}, {"name": "条例", "value": 0.0, "symbolSize": 6.0}, {"name": "国家", "value": 0.0, "symbolSize": 6.0}, {"name": "数据", "value": 0.0, "symbolSize": 6.0}, {"name": "事项", "value": 0.0, "symbolSize": 6.0}, {"name": "立规", "value": 0.0, "symbolSize": 6.0}, {"name": "年度", "value": 0.0, "symbolSize": 6.0}, {"name": "工业", "value": 0.0, "symbolSize": 6.0}, {"name": "健全", "value": 0.0, "symbolSize": 6.0}, {"name": "创新", "value": 0.0, "symbolSize": 6.0}, {"name": "算力", "value": 0.0, "symbolSize": 6.0}, {"name": "体育局", "value": 0.0, "symbolSize": 6.0}, {"name": "智能网", "value": 0.0, "symbolSize": 6.0}, {"name": "跨境", "value": 0.0, "symbolSize": 6.0}, {"name": "规上", "value": 0.0, "symbolSize": 6.0}, {"name": "生产性", "value": 0.0, "symbolSize": 6.0}, {"name": "落实", "value": 0.0, "symbolSize": 6.0}, {"name": "AI", "value": 0.0, "symbolSize": 6.0}, {"name": "河湖", "value": 0.0, "symbolSize": 6.0}, {"name": "价值", "value": 0.0, "symbolSize": 6.0}, {"name": "场景", "value": 0.0, "symbolSize": 6.0}, {"name": "海岛", "value": 0.0, "symbolSize": 6.0}, {"name": "建筑", "value": 0.0, "symbolSize": 6.0}, {"name": "国企", "value": 0.0, "symbolSize": 6.0}, {"name": "专科", "value": 0.0, "symbolSize": 6.0}, {"name": "百县", "value": 0.0, "symbolSize": 6.0}, {"name": "新增", "value": 0.0, "symbolSize": 6.0}, {"name": "算法", "value": 0.0, "symbolSize": 6.0}, {"name": "社会主义", "value": 0.0, "symbolSize": 6.0}, {"name": "社会", "value": 0.0, "symbolSize": 6.0}, {"name": "法律", "value": 0.0, "symbolSize": 6.0}, {"name": "市政府", "value": 0.0, "symbolSize": 6.0}, {"name": "专业", "value": 0.0, "symbolSize": 6.0}, {"name": "执法", "value": 0.0, "symbolSize": 6.0}, {"name": "补短", "value": 0.0, "symbolSize": 6.0}, {"name": "机场", "value": 0.0, "symbolSize": 6.0}, {"name": "服务业", "value": 0.0, "symbolSize": 6.0}, {"name": "职业", "value": 0.0, "symbolSize": 6.0}, {"name": "大湾", "value": 0.0, "symbolSize": 6.0}, {"name": "收入", "value": 0.0, "symbolSize": 6.0}, {"name": "大宗", "value": 0.0, "symbolSize": 6.0}, {"name": "立法", "value": 0.0, "symbolSize": 6.0}, {"name": "全方位", "value": 0.0, "symbolSize": 6.0}, {"name": "省级", "value": 0.0, "symbolSize": 6.0}, {"name": "开展", "value": 0.0, "symbolSize": 6.0}, {"name": "人民", "value": 0.0, "symbolSize": 6.0}, {"name": "机制", "value": 0.0, "symbolSize": 6.0}, {"name": "具身", "value": 0.0, "symbolSize": 6.0}, {"name": "提振", "value": 0.0, "symbolSize": 6.0}, {"name": "国民经济", "value": 0.0, "symbolSize": 6.0}, {"name": "坚持", "value": 0.0, "symbolSize": 6.0}, {"name": "贸易", "value": 0.0, "symbolSize": 6.0}, {"name": "二期", "value": 0.0, "symbolSize": 6.0}, {"name": "一批", "value": 0.0, "symbolSize": 6.0}, {"name": "行业", "value": 0.0, "symbolSize": 6.0}, {"name": "人才", "value": 0.0, "symbolSize": 6.0}, {"name": "变革", "value": 0.0, "symbolSize": 6.0}, {"name": "养老", "value": 0.0, "symbolSize": 6.0}, {"name": "事务所", "value": 0.0, "symbolSize": 6.0}, {"name": "储能", "value": 0.0, "symbolSize": 6.0}, {"name": "品牌", "value": 0.0, "symbolSize": 6.0}, {"name": "优势", "value": 0.0, "symbolSize": 6.0}, {"name": "惠州市", "value": 0.0, "symbolSize": 6.0}, {"name": "贯彻", "value": 0.0, "symbolSize": 6.0}, {"name": "民间", "value": 0.0, "symbolSize": 6.0}, {"name": "行动", "value": 0.0, "symbolSize": 6.0}, {"name": "绿色", "value": 0.0, "symbolSize": 6.0}, {"name": "制造", "value": 0.0, "symbolSize": 6.0}, {"name": "科技", "value": 0.0, "symbolSize": 6.0}, {"name": "研究", "value": 0.0, "symbolSize": 6.0}, {"name": "应用", "value": 0.0, "symbolSize": 6.0}, {"name": "生态", "value": 0.0, "symbolSize": 6.0}, {"name": "中心", "value": 0.0, "symbolSize": 6.0}, {"name": "府城", "value": 0.0, "symbolSize": 6.0}, {"name": "共性", "value": 0.0, "symbolSize": 6.0}, {"name": "国企改革", "value": 0.0, "symbolSize": 6.0}, {"name": "倍增", "value": 0.0, "symbolSize": 6.0}, {"name": "海洋", "value": 0.0, "symbolSize": 6.0}, {"name": "体系", "value": 0.0, "symbolSize": 6.0}, {"name": "治理", "value": 0.0, "symbolSize": 6.0}, {"name": "携手", "value": 0.0, "symbolSize": 6.0}, {"name": "至上", "value": 0.0, "symbolSize": 6.0}, {"name": "多式", "value": 0.0, "symbolSize": 6.0}, {"name": "改革", "value": 0.0, "symbolSize": 6.0}, {"name": "培育", "value": 0.0, "symbolSize": 6.0}, {"name": "科技成果", "value": 0.0, "symbolSize": 6.0}, {"name": "文件", "value": 0.0, "symbolSize": 6.0}, {"name": "限额", "value": 0.0, "symbolSize": 6.0}, {"name": "高速", "value": 0.0, "symbolSize": 6.0}, {"name": "幸福", "value": 0.0, "symbolSize": 6.0}, {"name": "获评", "value": 0.0, "symbolSize": 6.0}, {"name": "作用", "value": 0.0, "symbolSize": 6.0}, {"name": "生育", "value": 0.0, "symbolSize": 6.0}, {"name": "国内", "value": 0.0, "symbolSize": 6.0}, {"name": "修复", "value": 0.0, "symbolSize": 6.0}, {"name": "教师", "value": 0.0, "symbolSize": 6.0}, {"name": "森林", "value": 0.0, "symbolSize": 6.0}, {"name": "平台", "value": 0.0, "symbolSize": 6.0}, {"name": "技术", "value": 0.0, "symbolSize": 6.0}, {"name": "高水平", "value": 0.0, "symbolSize": 6.0}, {"name": "现代化", "value": 0.0, "symbolSize": 6.0}, {"name": "石化", "value": 0.0, "symbolSize": 6.0}, {"name": "集群", "value": 0.0, "symbolSize": 6.0}, {"name": "城市", "value": 0.0, "symbolSize": 6.0}, {"name": "港澳", "value": 0.0, "symbolSize": 6.0}, {"name": "中医药", "value": 0.0, "symbolSize": 6.0}, {"name": "东岸", "value": 0.0, "symbolSize": 6.0}, {"name": "健康", "value": 0.0, "symbolSize": 6.0}, {"name": "机构", "value": 0.0, "symbolSize": 6.0}, {"name": "模型", "value": 0.0, "symbolSize": 6.0}, {"name": "安全", "value": 0.0, "symbolSize": 6.0}, {"name": "改造", "value": 0.0, "symbolSize": 6.0}, {"name": "能力", "value": 0.0, "symbolSize": 6.0}, {"name": "谋划", "value": 0.0, "symbolSize": 6.0}, {"name": "民生", "value": 0.0, "symbolSize": 6.0}, {"name": "营业", "value": 0.0, "symbolSize": 6.0}, {"name": "智能", "value": 0.0, "symbolSize": 6.0}, {"name": "电池", "value": 0.0, "symbolSize": 6.0}, {"name": "中医", "value": 0.0, "symbolSize": 6.0}, {"name": "产业园", "value": 0.0, "symbolSize": 6.0}, {"name": "制度", "value": 0.0, "symbolSize": 6.0}, {"name": "人民政府", "value": 0.0, "symbolSize": 6.0}, {"name": "翻番", "value": 0.0, "symbolSize": 6.0}, {"name": "惠州", "value": 0.0, "symbolSize": 6.0}, {"name": "高铁", "value": 0.0, "symbolSize": 6.0}, {"name": "公共", "value": 0.0, "symbolSize": 6.0}, {"name": "旅游", "value": 0.0, "symbolSize": 6.0}, {"name": "起草", "value": 0.0, "symbolSize": 6.0}, {"name": "高速公路", "value": 0.0, "symbolSize": 6.0}, {"name": "规模", "value": 0.0, "symbolSize": 6.0}, {"name": "五年", "value": 0.0, "symbolSize": 6.0}, {"name": "进口", "value": 0.0, "symbolSize": 6.0}, {"name": "第十五", "value": 0.0, "symbolSize": 6.0}, {"name": "加快", "value": 0.0, "symbolSize": 6.0}, {"name": "辐照", "value": 0.0, "symbolSize": 6.0}, {"name": "学院", "value": 0.0, "symbolSize": 6.0}, {"name": "人均", "value": 0.0, "symbolSize": 6.0}, {"name": "运营", "value": 0.0, "symbolSize": 6.0}, {"name": "生产", "value": 0.0, "symbolSize": 6.0}, {"name": "增加值", "value": 0.0, "symbolSize": 6.0}, {"name": "重大", "value": 0.0, "symbolSize": 6.0}, {"name": "粤港澳", "value": 0.0, "symbolSize": 6.0}, {"name": "数字化", "value": 0.0, "symbolSize": 6.0}, {"name": "加速器", "value": 0.0, "symbolSize": 6.0}, {"name": "综合", "value": 0.0, "symbolSize": 6.0}, {"name": "床位", "value": 0.0, "symbolSize": 6.0}, {"name": "规范性", "value": 0.0, "symbolSize": 6.0}, {"name": "低碳", "value": 0.0, "symbolSize": 6.0}, {"name": "下降", "value": 0.0, "symbolSize": 6.0}, {"name": "电商", "value": 0.0, "symbolSize": 6.0}, {"name": "高端", "value": 0.0, "symbolSize": 6.0}, {"name": "涉外", "value": 0.0, "symbolSize": 6.0}, {"name": "电子", "value": 0.0, "symbolSize": 6.0}, {"name": "育人", "value": 0.0, "symbolSize": 6.0}, {"name": "全面", "value": 0.0, "symbolSize": 6.0}, {"name": "中医医院", "value": 0.0, "symbolSize": 6.0}, {"name": "装置", "value": 0.0, "symbolSize": 6.0}, {"name": "审议", "value": 0.0, "symbolSize": 6.0}, {"name": "货运", "value": 0.0, "symbolSize": 6.0}, {"name": "保障", "value": 0.0, "symbolSize": 6.0}, {"name": "推动", "value": 0.0, "symbolSize": 6.0}, {"name": "管理条例", "value": 0.0, "symbolSize": 6.0}, {"name": "以上", "value": 0.0, "symbolSize": 6.0}, {"name": "消费", "value": 0.0, "symbolSize": 6.0}, {"name": "信用", "value": 0.0, "symbolSize": 6.0}, {"name": "经济", "value": 0.0, "symbolSize": 6.0}, {"name": "合作", "value": 0.0, "symbolSize": 6.0}, {"name": "海域", "value": 0.0, "symbolSize": 6.0}, {"name": "律师", "value": 0.0, "symbolSize": 6.0}, {"name": "革命", "value": 0.0, "symbolSize": 6.0}];
-const KL = [{"source": "行政", "target": "执法"}, {"source": "法治", "target": "政府"}, {"source": "亿元", "target": "增长"}, {"source": "收入", "target": "增长"}, {"source": "惠州市", "target": "人民政府"}, {"source": "全省", "target": "增长"}, {"source": "增长", "target": "投资"}, {"source": "行政", "target": "重大"}, {"source": "惠州市", "target": "起草"}, {"source": "新型", "target": "储能"}, {"source": "智能", "target": "机器人"}, {"source": "能源", "target": "绿色"}, {"source": "专科", "target": "省级"}, {"source": "河湖", "target": "幸福"}, {"source": "文化", "target": "公共"}, {"source": "绿色", "target": "低碳"}, {"source": "城市", "target": "管理"}, {"source": "服务业", "target": "企业"}, {"source": "千镇", "target": "百县"}, {"source": "保护", "target": "生态"}, {"source": "国家", "target": "安全"}, {"source": "行动", "target": "消费"}, {"source": "高水平", "target": "安全"}, {"source": "创新", "target": "科技"}, {"source": "储能", "target": "电池"}, {"source": "创新", "target": "企业"}, {"source": "收入", "target": "营业"}, {"source": "立法", "target": "工作"}, {"source": "人民", "target": "至上"}, {"source": "五年", "target": "第十五"}, {"source": "提振", "target": "消费"}, {"source": "政府", "target": "管理"}, {"source": "涉外", "target": "律师"}, {"source": "加速器", "target": "装置"}, {"source": "风电", "target": "海上"}, {"source": "保护", "target": "海洋"}, {"source": "规划", "target": "五年"}, {"source": "惠州市", "target": "管理条例"}, {"source": "医疗", "target": "医院"}, {"source": "转化", "target": "科技成果"}, {"source": "规划", "target": "第十五"}, {"source": "工作", "target": "治理"}, {"source": "养老", "target": "床位"}, {"source": "政府", "target": "作用"}, {"source": "增长", "target": "营业"}, {"source": "增长", "target": "以上"}, {"source": "增长", "target": "下降"}, {"source": "市政府", "target": "惠州市"}, {"source": "场景", "target": "应用"}, {"source": "社会", "target": "治理"}, {"source": "行政", "target": "规范性"}, {"source": "材料", "target": "产业园"}, {"source": "人工智能", "target": "应用"}, {"source": "国民经济", "target": "规划"}, {"source": "行业", "target": "模型"}, {"source": "生态", "target": "海洋"}, {"source": "惠州市", "target": "审议"}, {"source": "AI", "target": "智能"}, {"source": "决策", "target": "行政"}, {"source": "企业", "target": "电商"}, {"source": "年度", "target": "惠州市"}, {"source": "年度", "target": "事项"}, {"source": "跨境", "target": "电商"}, {"source": "年度", "target": "人民政府"}, {"source": "企业", "target": "培育"}, {"source": "研发", "target": "电池"}, {"source": "研发", "target": "制造"}, {"source": "海上", "target": "旅游"}, {"source": "决策", "target": "重大"}, {"source": "城市群", "target": "携手"}, {"source": "医院", "target": "专科"}, {"source": "医院", "target": "省级"}, {"source": "服务业", "target": "生产性"}, {"source": "治理", "target": "安全"}, {"source": "法治", "target": "法律"}, {"source": "法治", "target": "涉外"}, {"source": "产教", "target": "教育"}, {"source": "服务", "target": "服务业"}, {"source": "服务", "target": "企业"}, {"source": "服务", "target": "跨境"}, {"source": "服务", "target": "养老"}, {"source": "单位", "target": "以上"}, {"source": "单位", "target": "限额"}, {"source": "就业", "target": "创业"}, {"source": "机场", "target": "货运"}, {"source": "海洋", "target": "海域"}, {"source": "体系", "target": "管理"}, {"source": "治理", "target": "管理"}, {"source": "多式", "target": "综合"}, {"source": "文化", "target": "旅游"}, {"source": "改革", "target": "综合"}, {"source": "制造", "target": "电池"}, {"source": "制造", "target": "智能"}, {"source": "研究", "target": "加速器"}, {"source": "城市", "target": "治理"}, {"source": "城市", "target": "文化"}, {"source": "共性", "target": "技术"}, {"source": "品牌", "target": "行动"}, {"source": "优势", "target": "中医医院"}, {"source": "集群", "target": "产业"}, {"source": "机构", "target": "涉外"}, {"source": "产业", "target": "加快"}, {"source": "产业", "target": "高端"}, {"source": "产业", "target": "健康"}, {"source": "产业", "target": "机器人"}, {"source": "改革", "target": "制度"}, {"source": "文件", "target": "规范性"}, {"source": "限额", "target": "以上"}, {"source": "高速", "target": "高速公路"}, {"source": "修复", "target": "信用"}, {"source": "技术", "target": "电子"}, {"source": "高水平", "target": "保障"}, {"source": "工程", "target": "二期"}, {"source": "拓展", "target": "绿色"}, {"source": "科技人才", "target": "学院"}, {"source": "科技人才", "target": "教育"}, {"source": "科技人才", "target": "补短"}, {"source": "协同", "target": "产业"}, {"source": "文旅", "target": "旅游"}, {"source": "涉企", "target": "执法"}, {"source": "项目", "target": "全国"}, {"source": "项目", "target": "新增"}, {"source": "整治", "target": "流域"}, {"source": "发展", "target": "民生"}, {"source": "发展", "target": "坚持"}, {"source": "发展", "target": "产业"}, {"source": "大宗", "target": "消费"}, {"source": "创新", "target": "平台"}, {"source": "创新", "target": "高水平"}, {"source": "企业", "target": "翻番"}, {"source": "企业", "target": "科技"}, {"source": "企业", "target": "数字化"}, {"source": "企业", "target": "行动"}, {"source": "工作", "target": "管理"}, {"source": "设计", "target": "智能"}, {"source": "开发", "target": "海洋"}, {"source": "开发", "target": "生态"}, {"source": "交流", "target": "教师"}, {"source": "红色", "target": "革命"}, {"source": "医院", "target": "中心"}, {"source": "国家", "target": "落实"}, {"source": "数据", "target": "模型"}, {"source": "数据", "target": "行业"}, {"source": "数据", "target": "人工智能"}, {"source": "教育", "target": "专业"}, {"source": "教育", "target": "教师"}, {"source": "教育", "target": "人工智能"}, {"source": "根本", "target": "坚持"}, {"source": "公共卫生", "target": "健康"}, {"source": "条例", "target": "惠州市"}, {"source": "条例", "target": "管理条例"}, {"source": "广东", "target": "投资"}, {"source": "工业", "target": "增长"}, {"source": "健全", "target": "制度"}, {"source": "人口", "target": "生育"}, {"source": "教育", "target": "文化"}, {"source": "教育", "target": "学院"}, {"source": "教育", "target": "育人"}, {"source": "教育", "target": "补短"}, {"source": "教育", "target": "学生"}, {"source": "结构性", "target": "国内"}, {"source": "全市", "target": "行政"}, {"source": "年度", "target": "行政"}, {"source": "年度", "target": "重大"}, {"source": "工业", "target": "规上"}, {"source": "专科", "target": "中医"}, {"source": "专科", "target": "中医医院"}, {"source": "专科", "target": "中心"}, {"source": "价值", "target": "生态"}, {"source": "海岛", "target": "海域"}, {"source": "海岛", "target": "海洋"}, {"source": "海岛", "target": "生态"}, {"source": "落实", "target": "制度"}, {"source": "落实", "target": "安全"}, {"source": "特色", "target": "一批"}, {"source": "特色", "target": "文化"}, {"source": "特色", "target": "中医"}, {"source": "特色", "target": "中医药"}, {"source": "国企", "target": "国企改革"}, {"source": "智能网", "target": "智能"}, {"source": "海上", "target": "谋划"}, {"source": "迈上", "target": "广东"}, {"source": "亿元", "target": "园区"}, {"source": "亿元", "target": "工业"}, {"source": "亿元", "target": "规上"}, {"source": "涉企", "target": "行政"}, {"source": "研发", "target": "储能"}, {"source": "研发", "target": "智能"}, {"source": "研发", "target": "设计"}, {"source": "研发", "target": "重点"}, {"source": "研发", "target": "材料"}, {"source": "提升", "target": "森林"}, {"source": "提升", "target": "能力"}, {"source": "比重", "target": "增加值"}, {"source": "决策", "target": "事项"}, {"source": "决策", "target": "人民政府"}, {"source": "决策", "target": "年度"}, {"source": "企业", "target": "一批"}, {"source": "企业", "target": "倍增"}, {"source": "企业", "target": "推动"}, {"source": "企业", "target": "贸易"}, {"source": "企业", "target": "跨境"}, {"source": "城际", "target": "谋划"}, {"source": "创新", "target": "变革"}, {"source": "创新", "target": "人才"}, {"source": "体育局", "target": "市政府"}, {"source": "体育局", "target": "惠州市"}, {"source": "算力", "target": "人工智能"}, {"source": "AI", "target": "人工智能"}, {"source": "落实", "target": "规划"}, {"source": "数据", "target": "安全"}, {"source": "事项", "target": "人民政府"}, {"source": "事项", "target": "行政"}, {"source": "事项", "target": "重大"}, {"source": "事项", "target": "惠州市"}, {"source": "规上", "target": "增长"}, {"source": "能源", "target": "材料"}, {"source": "法律", "target": "公共"}, {"source": "法律", "target": "律师"}, {"source": "法律", "target": "涉外"}, {"source": "增长", "target": "增加值"}, {"source": "行政", "target": "惠州市"}, {"source": "行政", "target": "文件"}, {"source": "行政", "target": "管理"}, {"source": "社会", "target": "保障"}, {"source": "市政府", "target": "审议"}, {"source": "市政府", "target": "起草"}, {"source": "材料", "target": "储能"}, {"source": "材料", "target": "产业"}, {"source": "材料", "target": "集群"}, {"source": "行政", "target": "制度"}, {"source": "行政", "target": "人民政府"}, {"source": "场景", "target": "具身"}, {"source": "建筑", "target": "绿色"}, {"source": "社会主义", "target": "贯彻"}, {"source": "算法", "target": "模型"}, {"source": "材料", "target": "电子"}, {"source": "材料", "target": "石化"}, {"source": "贸易", "target": "进口"}, {"source": "一批", "target": "培育"}, {"source": "生态", "target": "修复"}, {"source": "生态", "target": "绿色"}, {"source": "港澳", "target": "合作"}, {"source": "中医药", "target": "中医医院"}, {"source": "国民经济", "target": "五年"}, {"source": "国民经济", "target": "第十五"}, {"source": "中心", "target": "中医医院"}, {"source": "人工智能", "target": "东岸"}, {"source": "人工智能", "target": "机器人"}, {"source": "坚持", "target": "现代化"}, {"source": "具身", "target": "机器人"}, {"source": "机制", "target": "改革"}, {"source": "民间", "target": "投资"}, {"source": "中医药", "target": "优势"}, {"source": "规划", "target": "产业"}, {"source": "规划", "target": "改革"}, {"source": "事务所", "target": "律师"}, {"source": "事务所", "target": "涉外"}, {"source": "保护", "target": "修复"}, {"source": "保护", "target": "开发"}, {"source": "规范", "target": "行政"}, {"source": "英才", "target": "人才"}, {"source": "工作", "target": "城市"}, {"source": "医疗", "target": "健康"}, {"source": "医疗", "target": "专科"}, {"source": "医疗", "target": "省级"}, {"source": "全国", "target": "获评"}, {"source": "制造业", "target": "增长"}, {"source": "制造业", "target": "坚持"}, {"source": "市场", "target": "经济"}, {"source": "机制", "target": "安全"}, {"source": "开展", "target": "辐照"}, {"source": "全方位", "target": "城市"}, {"source": "府城", "target": "改造"}, {"source": "政府", "target": "人工智能"}, {"source": "政府", "target": "投资"}, {"source": "补短", "target": "学院"}, {"source": "提振", "target": "行动"}, {"source": "具身", "target": "应用"}, {"source": "规模", "target": "以上"}, {"source": "投资", "target": "消费"}, {"source": "投资", "target": "下降"}, {"source": "重大", "target": "规范性"}, {"source": "服务业", "target": "增长"}, {"source": "模型", "target": "智能"}, {"source": "谋划", "target": "惠州"}, {"source": "人民政府", "target": "重大"}, {"source": "安全", "target": "生产"}, {"source": "智能", "target": "电子"}, {"source": "运营", "target": "高铁"}, {"source": "起草", "target": "管理条例"}, {"source": "石化", "target": "产业园"}, {"source": "现代化", "target": "全面"}, {"source": "立法", "target": "政府"}, {"source": "立法", "target": "立规"}, {"source": "扩大", "target": "投资"}, {"source": "思想", "target": "社会主义"}, {"source": "维护", "target": "安全"}, {"source": "新型", "target": "研发"}, {"source": "服务业", "target": "收入"}, {"source": "服务业", "target": "营业"}, {"source": "职业", "target": "学院"}, {"source": "大湾", "target": "粤港澳"}, {"source": "收入", "target": "人均"}, {"source": "收入", "target": "以上"}, {"source": "维护", "target": "国家"}, {"source": "消费", "target": "经济"}];
-const DATES = ["10-14", "10-15", "10-16", "10-17", "10-18", "10-19", "10-20", "10-21", "10-22", "10-23", "10-24", "10-25", "10-26", "10-27"];
-const JSD = [0.2, 0.207, 0.177, 0.233, 0.194, 0.175, 0.268, 0.074, 0.082, 0.155, 0.252, 0.091, 0.168, 0.16];
-const MATCHED = [20, 24, 25, 21, 19, 23, 19, 22, 23, 19, 15, 29, 21, 23];
-const OVERLAP = [0.053, 0.035, 0.0, 0.035, 0.035, 0.0, 0.035, 0.091, 0.0, 0.0, 0.0, 0.017, 0.071, 0.017];
-const PN = ["中国", "回应", "女子", "AI", "男子", "肖战", "演唱会", "老人", "为何", "手机", "结婚", "S16"];
-const PD = [14, 14, 10, 10, 8, 8, 7, 7, 7, 7, 6, 6];
-
+const FILES = ['policy-topics', 'topic-network', 'hotspot-comparison', 'temporal-trends', 'data-manifest'];
+async function loadData() {
+  try {
+    const parts = await Promise.all(FILES.map(n => fetch('public-data/' + n + '.json').then(r => {
+      if (!r.ok) throw new Error(n); return r.json();
+    })));
+    const d = {}; FILES.forEach((n, i) => d[n + '.json'] = parts[i]); return d;
+  } catch (e) {
+    if (window.POLICY_DATA) return window.POLICY_DATA;
+    throw e;
+  }
+}
+const COMM_COLORS = ['#2a9d6e', '#2563eb', '#7c3aed', '#d97706', '#64748b'];
+const COMM_NAMES = ['民生与建设', '产业与海洋科技', '工程与法治', '经济增长', '行政执法'];
 function bar(id, ydata, xdata, color, fmt) {
   const c = echarts.init(document.getElementById(id));
-  c.setOption({ tooltip: { trigger: 'axis', formatter: fmt },
+  c.setOption({ textStyle: { color: '#888' }, tooltip: { trigger: 'axis', formatter: fmt },
     grid: { left: 90, right: 30, top: 16, bottom: 30 },
     xAxis: { type: 'value' },
     yAxis: { type: 'category', data: ydata, axisLabel: { fontSize: 13 } },
-    series: [{ type: 'bar', data: xdata, itemStyle: { color: color, borderRadius: [0,6,6,0] } }] });
+    series: [{ type: 'bar', data: xdata, itemStyle: { color: color, borderRadius: [0, 6, 6, 0] } }] });
   window.addEventListener('resize', () => c.resize());
+  return c;
 }
+loadData().then(D => {
+  const topics = D['policy-topics.json'];
+  const net = D['topic-network.json'];
+  const comp = D['hotspot-comparison.json'];
+  const tr = D['temporal-trends.json'];
+  const man = D['data-manifest.json'];
+  const cp = man.corpus;
+  document.getElementById('m-passages').textContent = cp.passages;
+  document.getElementById('m-topics').textContent = cp.topics;
+  document.getElementById('m-days').textContent = cp.hotspot_days;
+  document.getElementById('m-titles').textContent = cp.hotspot_titles;
+  document.getElementById('m-version').textContent =
+    '数据版本 ' + man.version + ' · 政策文件 ' + cp.policy_docs + ' 份 · 人工标注 ' +
+    cp.annotation_pairs + ' 对 · 热点 ' + cp.date_range[0] + ' 至 ' + cp.date_range[1] + ' · 全部真实数据';
+  document.getElementById('m-matchrate').textContent =
+    comp.n_matched + '/' + comp.n_total + '（' + (comp.match_rate * 100).toFixed(1) + '%）';
+  document.getElementById('m-jsdmean').textContent = comp.jsd_mean;
+  document.getElementById('m-jsdrange').textContent = comp.jsd_min + ' – ' + comp.jsd_max;
 
-bar('c1', T.names, T.sizes, '#2a9d6e',
-  p => p[0].name + '：' + p[0].value + ' 段<br/>关键词：' + T.kw[T.names.indexOf(p[0].name)]);
+  const sorted = [...topics].sort((a, b) => a.n_passages - b.n_passages);
+  const tc = bar('c-topics', sorted.map(t => t.name), sorted.map(t => t.n_passages), '#2a9d6e',
+    p => { const t = sorted.find(x => x.name === p[0].name);
+      return t.name + '：' + t.n_passages + ' 段（' + (t.share * 100).toFixed(1) + '%）<br/>关键词：' + t.keywords.join(' / '); });
+  const tDetail = document.getElementById('topic-detail');
+  function showTopic(t) {
+    tDetail.innerHTML = '<h3>' + t.name + '</h3>段落数：' + t.n_passages + ' 段，占规划 ' +
+      (t.share * 100).toFixed(1) + '%<br/>关键词：' + t.keywords.join('、') +
+      '<br/>对应报告：reports/policy_synergy_20261014.md';
+  }
+  showTopic(sorted[sorted.length - 1]);
+  tc.on('click', p => showTopic(topics.find(t => t.name === p.name)));
 
-const g2 = echarts.init(document.getElementById('c2'));
-g2.setOption({ tooltip: { formatter: p => p.dataType === 'edge' ? p.data.source + ' — ' + p.data.target + '：' + p.data.value : p.data.name + '：' + p.data.value + ' 段' },
-  series: [{ type: 'graph', layout: 'force', data: TN, links: TL, roam: true, draggable: true,
-    label: { show: true, fontSize: 12 }, force: { repulsion: 320, edgeLength: 110 },
-    lineStyle: { width: 1.5, opacity: 0.6 }, emphasis: { focus: 'adjacency' } }] });
-window.addEventListener('resize', () => g2.resize());
+  const nodes = net.nodes.map(n => ({ name: n.name, value: n.betweenness,
+    symbolSize: 18 + n.betweenness * 220, category: n.community,
+    itemStyle: { color: COMM_COLORS[n.community] } }));
+  const links = net.edges.map(e => ({ source: e.source, target: e.target, value: e.weight,
+    lineStyle: { width: 1 + e.weight * 6, opacity: 0.6 } }));
+  const nc = echarts.init(document.getElementById('c-network'));
+  nc.setOption({ textStyle: { color: '#888' },
+    tooltip: { formatter: p => p.dataType === 'edge' ? p.data.source + ' — ' + p.data.target + '：相似度 ' + p.data.value
+      : p.data.name + '：中介中心性 ' + p.data.value },
+    legend: { data: COMM_NAMES, bottom: 0 },
+    series: [{ type: 'graph', layout: 'force', data: nodes, links: links, categories: COMM_NAMES.map(n => ({ name: n })),
+      roam: true, draggable: true, label: { show: true, fontSize: 12 },
+      force: { repulsion: 340, edgeLength: 120 }, emphasis: { focus: 'adjacency' } }] });
+  window.addEventListener('resize', () => nc.resize());
+  const nDetail = document.getElementById('network-detail');
+  function showNode(name) {
+    const n = net.nodes.find(x => x.name === name);
+    const ls = net.edges.filter(e => e.source === name || e.target === name)
+      .sort((a, b) => b.weight - a.weight).slice(0, 5)
+      .map(e => (e.source === name ? e.target : e.source) + '（' + e.weight + '）').join('、');
+    nDetail.innerHTML = '<h3>' + n.name + '</h3>关键词：' + n.keywords.join('、') +
+      '<br/>中介中心性：' + n.betweenness + ' · 所在社群：' + COMM_NAMES[n.community] +
+      '<br/>最强连接：' + ls;
+  }
+  showNode('城乡建设');
+  nc.on('click', p => { if (p.dataType === 'node') showNode(p.data.name); });
 
-const g3 = echarts.init(document.getElementById('c3'));
-g3.setOption({ tooltip: { formatter: p => p.data.name },
-  series: [{ type: 'graph', layout: 'force', data: KN, links: KL, roam: true, draggable: true,
-    label: { show: true, fontSize: 11 }, force: { repulsion: 220, edgeLength: 60 },
-    lineStyle: { width: 1, opacity: 0.5 }, itemStyle: { color: '#2a9d6e' }, emphasis: { focus: 'adjacency' } }] });
-window.addEventListener('resize', () => g3.resize());
+  const names = topics.map(t => t.name);
+  const cc = echarts.init(document.getElementById('c-compare'));
+  cc.setOption({ textStyle: { color: '#888' }, tooltip: { trigger: 'axis' },
+    legend: { data: ['规划占比', '匹配热点占比'] },
+    grid: { left: 90, right: 30, top: 30, bottom: 30 },
+    xAxis: { type: 'value', axisLabel: { formatter: v => (v * 100).toFixed(0) + '%' } },
+    yAxis: { type: 'category', data: names, axisLabel: { fontSize: 13 } },
+    series: [{ name: '规划占比', type: 'bar', data: names.map(n => comp.policy_share[n]),
+        itemStyle: { color: '#2a9d6e' } },
+      { name: '匹配热点占比', type: 'bar', data: names.map(n => comp.matched_share[n] || 0),
+        itemStyle: { color: '#d97706' } }] });
+  window.addEventListener('resize', () => cc.resize());
 
-const c4 = echarts.init(document.getElementById('c4'));
-c4.setOption({ tooltip: { trigger: 'axis' },
-  legend: { data: ['差距值', '配对成功热点数'] },
-  grid: { left: 50, right: 50, top: 30, bottom: 30 },
-  xAxis: { type: 'category', data: DATES },
-  yAxis: [{ type: 'value', name: '差距值' }, { type: 'value', name: '配对数', max: 60 }],
-  series: [{ name: '差距值', type: 'line', data: JSD, smooth: true, symbolSize: 8, itemStyle: { color: '#1a6b4a' } },
-           { name: '配对成功热点数', type: 'bar', yAxisIndex: 1, data: MATCHED, itemStyle: { color: '#a7d7c5' } }] });
-window.addEventListener('resize', () => c4.resize());
+  const ml = document.getElementById('match-list');
+  comp.top_matches.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'match';
+    div.innerHTML = '<b>“' + m.hotspot + '”</b>（' + m.platform + '）→ ' + m.policy_topic +
+      '，相似度 ' + m.similarity + '<span class="hint"> · 点一下看政策原文</span>' +
+      '<div class="passage">' + m.policy_passage + '……</div>';
+    div.onclick = () => div.classList.toggle('open');
+    ml.appendChild(div);
+  });
 
-bar('c5', PN, PD, '#e8a100', p => p[0].name + '：出现 ' + p[0].value + ' 天');
+  const dates = tr.daily.map(d => d.date.slice(5));
+  const jc = echarts.init(document.getElementById('c-jsd'));
+  jc.setOption({ textStyle: { color: '#888' }, tooltip: { trigger: 'axis' },
+    legend: { data: ['差距值', '配对成功热点数'] },
+    grid: { left: 50, right: 50, top: 30, bottom: 30 },
+    xAxis: { type: 'category', data: dates },
+    yAxis: [{ type: 'value', name: '差距值' }, { type: 'value', name: '配对数', max: 60 }],
+    series: [{ name: '差距值', type: 'line', data: tr.daily.map(d => d.jsd), smooth: true,
+        symbolSize: 8, itemStyle: { color: '#14532d' } },
+      { name: '配对成功热点数', type: 'bar', yAxisIndex: 1, data: tr.daily.map(d => d.n_matched),
+        itemStyle: { color: '#a7d7c5' } }] });
+  window.addEventListener('resize', () => jc.resize());
 
-const c6 = echarts.init(document.getElementById('c6'));
-c6.setOption({ tooltip: { trigger: 'axis', formatter: p => p[0].axisValue + '：重合度 ' + (p[0].value * 100).toFixed(1) + '%' },
-  grid: { left: 50, right: 30, top: 16, bottom: 30 },
-  xAxis: { type: 'category', data: DATES },
-  yAxis: { type: 'value', axisLabel: { formatter: v => (v * 100) + '%' } },
-  series: [{ type: 'bar', data: OVERLAP, itemStyle: { color: '#d97706', borderRadius: [6,6,0,0] } }] });
-window.addEventListener('resize', () => c6.resize());
+  const oc = echarts.init(document.getElementById('c-overlap'));
+  oc.setOption({ textStyle: { color: '#888' },
+    tooltip: { trigger: 'axis', formatter: p => p[0].axisValue + '：重合度 ' + (p[0].value * 100).toFixed(1) + '%' },
+    grid: { left: 50, right: 30, top: 16, bottom: 30 },
+    xAxis: { type: 'category', data: dates },
+    yAxis: { type: 'value', axisLabel: { formatter: v => (v * 100) + '%' } },
+    series: [{ type: 'bar', data: tr.platform_overlap.map(o => o.jaccard),
+      itemStyle: { color: '#d97706', borderRadius: [6, 6, 0, 0] } }] });
+  window.addEventListener('resize', () => oc.resize());
+
+  bar('c-persist', tr.persistence.map(p => p.keyword), tr.persistence.map(p => p.n_days), '#e8a100',
+    p => p[0].name + '：出现 ' + p[0].value + ' 天');
+}).catch(() => {
+  document.getElementById('m-version').textContent = '数据未能加载：请确认 public-data 目录已随仓库提交，或用 data.js 本地打开。';
+  document.querySelectorAll('[data-badge]').forEach(b => { b.className = 'badge missing'; b.textContent = '数据缺失'; });
+});
 </script>
 </body>
 </html>

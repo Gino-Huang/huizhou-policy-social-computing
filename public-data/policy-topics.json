@@ -1,0 +1,287 @@
+[
+  {
+    "id": 0,
+    "name": "企业人才",
+    "keywords": [
+      "企业",
+      "人才",
+      "培育",
+      "服务业",
+      "发展",
+      "青年",
+      "一批",
+      "推动",
+      "产业",
+      "服务"
+    ],
+    "n_passages": 50,
+    "share": 0.0579,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 1,
+    "name": "教育就业",
+    "keywords": [
+      "教育",
+      "学校",
+      "就业",
+      "行动",
+      "学院",
+      "合作",
+      "建设",
+      "推进",
+      "教学",
+      "学生"
+    ],
+    "n_passages": 49,
+    "share": 0.0568,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 2,
+    "name": "科技创新",
+    "keywords": [
+      "创新",
+      "科技",
+      "平台",
+      "智慧",
+      "产业",
+      "转化",
+      "科技成果",
+      "推动",
+      "支持",
+      "企业"
+    ],
+    "n_passages": 55,
+    "share": 0.0637,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 3,
+    "name": "海洋旅游",
+    "keywords": [
+      "海洋",
+      "发展",
+      "产业",
+      "建设",
+      "惠州",
+      "旅游",
+      "经济",
+      "保护",
+      "生态",
+      "海上"
+    ],
+    "n_passages": 94,
+    "share": 0.1089,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 4,
+    "name": "新材料智能",
+    "keywords": [
+      "材料",
+      "智能",
+      "人工智能",
+      "产业",
+      "应用",
+      "电池",
+      "机器人",
+      "算力",
+      "制造",
+      "研发"
+    ],
+    "n_passages": 67,
+    "share": 0.0776,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 5,
+    "name": "工程规划",
+    "keywords": [
+      "工程",
+      "发展",
+      "规划",
+      "实施",
+      "建设",
+      "城乡",
+      "推进",
+      "高质量",
+      "生态",
+      "经济"
+    ],
+    "n_passages": 65,
+    "share": 0.0753,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 6,
+    "name": "城乡建设",
+    "keywords": [
+      "建设",
+      "推进",
+      "城市",
+      "提升",
+      "改造",
+      "加快",
+      "乡村",
+      "完善",
+      "体系",
+      "基础设施"
+    ],
+    "n_passages": 141,
+    "share": 0.1634,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 7,
+    "name": "养老医疗",
+    "keywords": [
+      "服务",
+      "养老",
+      "健康",
+      "建设",
+      "医疗",
+      "医院",
+      "就业",
+      "保障",
+      "发展",
+      "推进"
+    ],
+    "n_passages": 76,
+    "share": 0.0881,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 8,
+    "name": "投资改革",
+    "keywords": [
+      "投资",
+      "政府",
+      "服务",
+      "管理",
+      "机制",
+      "改革",
+      "深化",
+      "民间",
+      "财政",
+      "审批"
+    ],
+    "n_passages": 30,
+    "share": 0.0348,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 9,
+    "name": "法治思想",
+    "keywords": [
+      "法治",
+      "广东",
+      "政府",
+      "习近平",
+      "社会主义",
+      "全面",
+      "思想",
+      "贯彻",
+      "领导",
+      "工作"
+    ],
+    "n_passages": 37,
+    "share": 0.0429,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 10,
+    "name": "安全涉外",
+    "keywords": [
+      "安全",
+      "涉外",
+      "国家",
+      "领域",
+      "法律",
+      "法治",
+      "制度",
+      "律师",
+      "加强",
+      "平安"
+    ],
+    "n_passages": 41,
+    "share": 0.0475,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 11,
+    "name": "经济增长",
+    "keywords": [
+      "增长",
+      "亿元",
+      "全省",
+      "收入",
+      "工业",
+      "增加值",
+      "规上",
+      "投资",
+      "全市",
+      "制造业"
+    ],
+    "n_passages": 42,
+    "share": 0.0487,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 12,
+    "name": "绿色消费",
+    "keywords": [
+      "消费",
+      "绿色",
+      "低碳",
+      "推动",
+      "实施",
+      "行动",
+      "产品",
+      "发展",
+      "建设",
+      "能源"
+    ],
+    "n_passages": 31,
+    "share": 0.0359,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 13,
+    "name": "行政执法",
+    "keywords": [
+      "行政",
+      "执法",
+      "惠州市",
+      "事项",
+      "人民政府",
+      "重大",
+      "决策",
+      "市政府",
+      "起草",
+      "审议"
+    ],
+    "n_passages": 42,
+    "share": 0.0487,
+    "report": "reports/policy_synergy_20261014.md"
+  },
+  {
+    "id": 14,
+    "name": "市场立法",
+    "keywords": [
+      "市场",
+      "立法",
+      "改革",
+      "投资",
+      "机制",
+      "政府",
+      "建设",
+      "社会",
+      "统一",
+      "信用"
+    ],
+    "n_passages": 43,
+    "share": 0.0498,
+    "report": "reports/policy_synergy_20261014.md"
+  }
+]

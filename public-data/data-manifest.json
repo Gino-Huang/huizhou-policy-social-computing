@@ -1,0 +1,30 @@
+{
+  "version": "2026-10-27",
+  "generated_at": "2026-11-04T08:55:14.575390+00:00",
+  "git_commit": "unknown",
+  "corpus": {
+    "policy_docs": 7,
+    "passages": 863,
+    "topics": 15,
+    "annotation_pairs": 120,
+    "hotspot_days": 14,
+    "hotspot_titles": 840,
+    "date_range": [
+      "2026-10-14",
+      "2026-10-27"
+    ]
+  },
+  "sources": {
+    "policy-topics.json": "reports/policy_synergy_20261014.md",
+    "topic-network.json": "reports/policy_synergy_20261014.md",
+    "hotspot-comparison.json": "reports/real_data_run3_20261015.md, reports/temporal_analysis_v3_20261027.md",
+    "temporal-trends.json": "reports/temporal_analysis_v3_20261027.md"
+  },
+  "status": {
+    "policy-topics.json": "real",
+    "topic-network.json": "real",
+    "hotspot-comparison.json": "real",
+    "temporal-trends.json": "real"
+  },
+  "notes": "14-day series 2026-10-14 to 2026-10-27 (840 hotspots), superseding the 10-day figures in the 2026-10-25 proposal."
+}
