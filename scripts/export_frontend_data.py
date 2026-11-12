@@ -55,7 +55,7 @@ def git_commit():
 def main():
     run_v2 = load_json("run_summary_v2.json")
     synergy = load_json("synergy_summary.json")
-    temporal = load_json("temporal_summary_20261027.json")
+    temporal = load_json("temporal_summary_20261112.json")
     run_v3 = load_json("run_summary_v3.json")
     topic_edges = read_csv("synergy_topic_edges.csv")
 
@@ -149,7 +149,7 @@ def main():
         "temporal-trends.json": trends,
     }
     manifest = {
-        "version": "2026-10-27",
+        "version": "2026-11-12",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "git_commit": git_commit(),
         "corpus": {
@@ -168,8 +168,8 @@ def main():
             "temporal-trends.json": "reports/temporal_analysis_v3_20261027.md",
         },
         "status": {name: "real" for name in datasets},
-        "notes": ("14-day series 2026-10-14 to 2026-10-27 (840 hotspots), "
-                  "superseding the 10-day figures in the 2026-10-25 proposal."),
+        "notes": ("30-day series 2026-10-14 to 2026-11-12 (1800 hotspots), "
+                  "superseding the 14-day figures in the 2026-10-27 version."),
     }
 
     OUT.mkdir(exist_ok=True)
@@ -185,9 +185,9 @@ def main():
         encoding="utf-8")
 
     # consistency checks against the reports
-    assert n_matched == 303 and n_total == 840, (n_matched, n_total)
+    assert n_matched == 639 and n_total == 1800, (n_matched, n_total)
     assert len(topics) == 15 and len(topic_network["edges"]) == 30
-    assert len(trends["daily"]) == 14
+    assert len(trends["daily"]) == 30
     print(f"exported {len(datasets)} datasets + manifest + data.js to {OUT}")
     print(f"match rate {n_matched}/{n_total} = {n_matched / n_total:.1%}, "
           f"JSD mean {sum(jsd_vals) / len(jsd_vals):.3f}")

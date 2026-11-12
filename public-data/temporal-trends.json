@@ -1,7 +1,7 @@
 {
   "date_range": [
     "2026-10-14",
-    "2026-10-27"
+    "2026-11-12"
   ],
   "daily": [
     {
@@ -87,6 +87,102 @@
       "jsd": 0.1595,
       "n_matched": 23,
       "n_hotspots": 60
+    },
+    {
+      "date": "2026-10-28",
+      "jsd": 0.2087,
+      "n_matched": 23,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-10-29",
+      "jsd": 0.2204,
+      "n_matched": 22,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-10-30",
+      "jsd": 0.2078,
+      "n_matched": 18,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-10-31",
+      "jsd": 0.1874,
+      "n_matched": 21,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-01",
+      "jsd": 0.1604,
+      "n_matched": 20,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-02",
+      "jsd": 0.1378,
+      "n_matched": 28,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-03",
+      "jsd": 0.31,
+      "n_matched": 18,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-04",
+      "jsd": 0.1623,
+      "n_matched": 22,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-05",
+      "jsd": 0.2103,
+      "n_matched": 21,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-06",
+      "jsd": 0.1135,
+      "n_matched": 20,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-07",
+      "jsd": 0.1354,
+      "n_matched": 23,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-08",
+      "jsd": 0.2836,
+      "n_matched": 22,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-09",
+      "jsd": 0.1849,
+      "n_matched": 17,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-10",
+      "jsd": 0.1816,
+      "n_matched": 20,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-11",
+      "jsd": 0.2268,
+      "n_matched": 21,
+      "n_hotspots": 60
+    },
+    {
+      "date": "2026-11-12",
+      "jsd": 0.1702,
+      "n_matched": 20,
+      "n_hotspots": 60
     }
   ],
   "platform_overlap": [
@@ -145,82 +241,176 @@
     {
       "date": "2026-10-27",
       "jaccard": 0.0169
+    },
+    {
+      "date": "2026-10-28",
+      "jaccard": 0.0345
+    },
+    {
+      "date": "2026-10-29",
+      "jaccard": 0.0169
+    },
+    {
+      "date": "2026-10-30",
+      "jaccard": 0.0
+    },
+    {
+      "date": "2026-10-31",
+      "jaccard": 0.0169
+    },
+    {
+      "date": "2026-11-01",
+      "jaccard": 0.0
+    },
+    {
+      "date": "2026-11-02",
+      "jaccard": 0.0345
+    },
+    {
+      "date": "2026-11-03",
+      "jaccard": 0.0169
+    },
+    {
+      "date": "2026-11-04",
+      "jaccard": 0.0169
+    },
+    {
+      "date": "2026-11-05",
+      "jaccard": 0.0169
+    },
+    {
+      "date": "2026-11-06",
+      "jaccard": 0.0169
+    },
+    {
+      "date": "2026-11-07",
+      "jaccard": 0.0
+    },
+    {
+      "date": "2026-11-08",
+      "jaccard": 0.0526
+    },
+    {
+      "date": "2026-11-09",
+      "jaccard": 0.0345
+    },
+    {
+      "date": "2026-11-10",
+      "jaccard": 0.0
+    },
+    {
+      "date": "2026-11-11",
+      "jaccard": 0.0714
+    },
+    {
+      "date": "2026-11-12",
+      "jaccard": 0.0
     }
   ],
   "persistence": [
     {
-      "keyword": "中国",
-      "n_days": 14,
-      "n_appearances": 42
+      "keyword": "回应",
+      "n_days": 29,
+      "n_appearances": 89
     },
     {
-      "keyword": "回应",
-      "n_days": 14,
-      "n_appearances": 38
+      "keyword": "中国",
+      "n_days": 27,
+      "n_appearances": 78
     },
     {
       "keyword": "女子",
-      "n_days": 10,
-      "n_appearances": 24
+      "n_days": 21,
+      "n_appearances": 52
     },
     {
       "keyword": "AI",
-      "n_days": 10,
-      "n_appearances": 18
+      "n_days": 17,
+      "n_appearances": 29
     },
     {
       "keyword": "男子",
-      "n_days": 8,
-      "n_appearances": 14
+      "n_days": 17,
+      "n_appearances": 29
     },
     {
-      "keyword": "肖战",
-      "n_days": 8,
-      "n_appearances": 10
+      "keyword": "苹果",
+      "n_days": 14,
+      "n_appearances": 18
     },
     {
-      "keyword": "演唱会",
-      "n_days": 7,
-      "n_appearances": 11
-    },
-    {
-      "keyword": "老人",
-      "n_days": 7,
-      "n_appearances": 10
-    },
-    {
-      "keyword": "为何",
-      "n_days": 7,
-      "n_appearances": 7
-    },
-    {
-      "keyword": "手机",
-      "n_days": 7,
-      "n_appearances": 7
-    },
-    {
-      "keyword": "结婚",
-      "n_days": 6,
-      "n_appearances": 9
+      "keyword": "世界",
+      "n_days": 14,
+      "n_appearances": 17
     },
     {
       "keyword": "S16",
-      "n_days": 6,
-      "n_appearances": 8
+      "n_days": 13,
+      "n_appearances": 21
+    },
+    {
+      "keyword": "为何",
+      "n_days": 13,
+      "n_appearances": 13
+    },
+    {
+      "keyword": "老人",
+      "n_days": 12,
+      "n_appearances": 15
+    },
+    {
+      "keyword": "结婚",
+      "n_days": 11,
+      "n_appearances": 16
+    },
+    {
+      "keyword": "肖战",
+      "n_days": 11,
+      "n_appearances": 14
     }
   ],
   "bursts": [
     {
+      "title": "黄金",
+      "platform": "weibo",
+      "date": "2026-11-06",
+      "z_score": 5.17
+    },
+    {
       "title": "金球奖",
       "platform": "weibo",
       "date": "2026-10-27",
-      "z_score": 3.12
+      "z_score": 4.69
+    },
+    {
+      "title": "油价",
+      "platform": "weibo",
+      "date": "2026-11-12",
+      "z_score": 4.6
     },
     {
       "title": "官方通报女子高铁开免提电话1小时",
       "platform": "baidu",
       "date": "2026-10-14",
-      "z_score": 2.95
+      "z_score": 4.44
+    },
+    {
+      "title": "官方通报女子高铁开免提电话1小时",
+      "platform": "baidu",
+      "date": "2026-10-15",
+      "z_score": 2.89
+    },
+    {
+      "title": "油价",
+      "platform": "weibo",
+      "date": "2026-10-30",
+      "z_score": 2.64
+    },
+    {
+      "title": "金球奖",
+      "platform": "weibo",
+      "date": "2026-10-26",
+      "z_score": 2.49
     }
   ]
 }

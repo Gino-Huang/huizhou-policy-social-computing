@@ -1,17 +1,17 @@
 {
-  "version": "2026-10-27",
-  "generated_at": "2026-11-04T08:55:14.575390+00:00",
+  "version": "2026-11-12",
+  "generated_at": "2026-11-12T12:11:16.819935+00:00",
   "git_commit": "unknown",
   "corpus": {
     "policy_docs": 7,
     "passages": 863,
     "topics": 15,
     "annotation_pairs": 120,
-    "hotspot_days": 14,
-    "hotspot_titles": 840,
+    "hotspot_days": 30,
+    "hotspot_titles": 1800,
     "date_range": [
       "2026-10-14",
-      "2026-10-27"
+      "2026-11-12"
     ]
   },
   "sources": {
@@ -26,5 +26,5 @@
     "hotspot-comparison.json": "real",
     "temporal-trends.json": "real"
   },
-  "notes": "14-day series 2026-10-14 to 2026-10-27 (840 hotspots), superseding the 10-day figures in the 2026-10-25 proposal."
+  "notes": "30-day series 2026-10-14 to 2026-11-12 (1800 hotspots), superseding the 14-day figures in the 2026-10-27 version."
 }
